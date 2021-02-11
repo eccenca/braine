@@ -93,5 +93,7 @@ environ["OAUTH_CLIENT_SECRET"] = "?"
 Now we are all set, execute ```itops-relay.py``` as following:
 ```
 python itops-relay.py
+node	docker-desktop	None	2021-02-11T20:59:16Z	30	777873480	6994264
+...
 ```
 
