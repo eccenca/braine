@@ -11,11 +11,11 @@ from kubernetes import client, config, watch, client
 from kubernetes.client.rest import ApiException
 
 # setup the environment for the connection to Corporate Memory
-environ["CMEM_BASE_URI"] = "https://braine.eccenca.dev/"
+environ["CMEM_BASE_URI"] = "https://braine.eccenca.dev/" # target cmem instance when writing to 'cmem'
 # use the following for 'password' OAUTH_GRANT_TYPE
 environ["OAUTH_GRANT_TYPE"] = "password"
 environ["OAUTH_USER"] = "user"
-environ["OAUTH_PASSWORD"] = "test"
+environ["OAUTH_PASSWORD"] = "user"
 environ["OAUTH_CLIENT_ID"] = "cmemc"
 # use the following for 'client_credentials' OAUTH_GRANT_TYPE
 # environ["OAUTH_GRANT_TYPE"] = "client_credentials"
@@ -23,15 +23,15 @@ environ["OAUTH_CLIENT_ID"] = "cmemc"
 # environ["OAUTH_CLIENT_SECRET"] = "c8c12828-000c-467b-9b6d-2d6b5e16df4a"
 
 # Relay DEFAULT configuration
-interval = 1
-group = "metrics.k8s.io"
-version = "v1beta1"
-kind = "nodes"
-channels = ['stdout']
-nodeTemplateFile = "node.template.nt"
-podTemplateFile = "pod.tempalte.nt"
-namespace = None
-mode = "sync"
+interval = 1 # default interval
+group = "metrics.k8s.io" # default server metrics group
+version = "v1beta1" # default API version
+kind = "node" # default kind of resource metrics
+channels = ['stdout'] # default output channel 
+nodeTemplateFile = "node.template.nt" # default node tempalte
+podTemplateFile = "pod.tempalte.nt" # default pod template
+namespace = None # default namespace
+mode = "sync" # default output streaming mode
 
 # CMEM configuration
 node_triple_template = "node.template.nt"
