@@ -90,8 +90,7 @@ environ["OAUTH_CLIENT_SECRET"] = "?"
 ```
 
 ## Usage 
-Now we are all set.
-Execute ```itops-relay.py``` with the following command
+Now we are all set, execute ```itops-relay.py``` as following:
 ```
 python itops-relay.py
 ```
