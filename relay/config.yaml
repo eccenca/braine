@@ -1,0 +1,17 @@
+# Relay configuration
+origin: kubernetes # origin 'kubernetes' (using default kubernetes configuraion) or 'kafka'
+kind: node
+# pod.namespace: default # only possible for kind 'pod'
+version: v1beta1
+interval: 30 # interval in seconds
+mode: async # broadcasting can be in 'sync' (default) or 'async' modes
+out: # available options 'stdout' and 'cmem'
+  - stdout
+  - cmem
+group: metrics.k8s.io
+
+# CMEM configuration
+cemc.update.graph: https://vocab.eccenca.com/itops/kubernetes
+cmemc.node.template: node.template.nt
+cmemc.pod.template: pod.template.nt"
+cemc.update.template: cmem.update.tempalte.sparql
