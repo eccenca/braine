@@ -11,7 +11,7 @@ pip install cmem-cmempy # for communicating with CMEM
 
 ## Configuration
 
-The configuration can be setup as follows:
+The configuration can be setup by editing the config.yaml file as follows:
 
 ### Relay
 
