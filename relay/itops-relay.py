@@ -11,11 +11,11 @@ from kubernetes import client, config, watch, client
 from kubernetes.client.rest import ApiException
 
 # setup the environment for the connection to Corporate Memory
-environ["CMEM_BASE_URI"] = "https://braine.eccenca.dev/" # target cmem instance when writing to 'cmem'
+environ["CMEM_BASE_URI"] = "https://braine.eccenca.dev/" # target cmem instance
 # use the following for 'password' OAUTH_GRANT_TYPE
 environ["OAUTH_GRANT_TYPE"] = "password"
-environ["OAUTH_USER"] = "user"
-environ["OAUTH_PASSWORD"] = "user"
+environ["OAUTH_USER"] = "?"
+environ["OAUTH_PASSWORD"] = "?"
 environ["OAUTH_CLIENT_ID"] = "cmemc"
 # use the following for 'client_credentials' OAUTH_GRANT_TYPE
 # environ["OAUTH_GRANT_TYPE"] = "client_credentials"
@@ -24,13 +24,16 @@ environ["OAUTH_CLIENT_ID"] = "cmemc"
 
 # Relay DEFAULT configuration
 interval = 1 # default interval
-group = "metrics.k8s.io" # default server metrics group
+group = "metrics.k8s.io" # default metrics server group
 version = "v1beta1" # default API version
 kind = "node" # default kind of resource metrics
 channels = ['stdout'] # default output channel 
 nodeTemplateFile = "node.template.nt" # default node tempalte
 podTemplateFile = "pod.tempalte.nt" # default pod template
 namespace = None # default namespace
+kubernetes_host = None
+kubernetes_api_key = None
+
 mode = "sync" # default output streaming mode
 
 # CMEM configuration
@@ -38,10 +41,6 @@ node_triple_template = "node.template.nt"
 pod_triple_templatee = "pod.template.nt"
 update_sparql_template = "query.update.template.sparql"
 update_sparql_graph = "https://vocab.eccenca.com/itops/kubernetes"
-
-# Kubernetes configs
-# Configs can be set in Configuration class directly or using helper utility
-config.load_kube_config()
 
 # Load itops transceiver configuration file from config.yaml file
 transceiverConfig = None
@@ -66,6 +65,10 @@ if('interval' in transceiverConfig):
     interval = transceiverConfig['interval']
 if('mode' in transceiverConfig):
     mode = transceiverConfig['mode']
+if('kubernetes.host' in transceiverConfig):
+    kubernetes_host = transceiverConfig['kubernetes.host']
+if('kubernetes.key' in transceiverConfig):
+    kubernetes_api_key = transceiverConfig['kubernetes.key']
 
 # Setting CMEM config
 if('cmem.node.template' in transceiverConfig):
@@ -76,6 +79,7 @@ if('cmem.update.template' in transceiverConfig):
     update_sparql_template = transceiverConfig['cmem.update.template']
 if('cmem.update.graph' in transceiverConfig):
     update_sparql_graph = transceiverConfig['cmem.update.graph']
+
 
 def out(kind, name, namespace, timestamp, window, cpu, memory):  
     print("%s\t%s\t%s\t%s\t%s\t%s\t%s" % (kind, name, namespace, timestamp, window, cpu, memory))
@@ -122,9 +126,24 @@ def fillTemplate(arguments, template):
                 template = template.replace("{" + arg + "}", value)
     return template
 
+# Kubernetes configs
+# Configs can be set in Configuration class directly or using helper utility
+customConfig = None
+if(kubernetes_host is None):
+    config.load_kube_config()
+else:
+    customConfig = client.Configuration(host=kubernetes_host)
+    if(kubernetes_api_key is not None):
+        customConfig.api_key['authorization'] = kubernetes_api_key
+
 # Output default options
 channelOptions = {'stdout': out, 'cmem': cmem}
-customAPIV1 = client.CustomObjectsApi()
+customAPIV1 = None
+if(customConfig is None):
+    customAPIV1 = client.CustomObjectsApi()
+else:
+    with client.ApiClient(customConfig) as api_client:
+        customAPIV1 = client.CustomObjectsApi(api_client)
 starttime = time.time()
 try:
     while True:
