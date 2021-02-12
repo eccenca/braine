@@ -15,10 +15,10 @@ The configuration can be setup by editing the `config.yaml` file as follows:
 
 ### Relay
 
-out: use this parameter to add or remove an outputstream channel.
+`out`: use this parameter to add or remove an outputstream channel.
 The relay supports two types of outputstreams `stdout` (default) and `cmem`.
 
-origin: use this parameter to select a inputstream. In this current version, it is not 
+`origin`: use this parameter to select a inputstream. In this current version, it is not 
 possible to change the origin, but Kafka will be added in the near future.
 
 `interval`: this parameter is useful to change the frequency (in seconds) of relay read/write operations (default `1`).
