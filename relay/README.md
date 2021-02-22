@@ -38,6 +38,7 @@ The relay supports two types of outputstreams `stdout` (default) and `cmem`.
 ### Kubernetes specifics
 
 `kubernetes.host`: use this parameter to setup the kubernetes host (default read from kubernetes config `config.load_kube_config()`)
+
 `kubernetes.key`: use this parameter to setup the kubernetes access key.
 
 ### CMEM
