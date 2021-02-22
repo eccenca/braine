@@ -3,14 +3,18 @@ origin: kubernetes # origin 'kubernetes' (using default kubernetes configuraion)
 kind: node # 'node' or 'pod'
 # pod.namespace: default # only possible for kind 'pod'
 version: v1beta1 # api version current supports only 'v1beta1'
-interval: 30 # interval in seconds
+interval: 2 # interval in seconds
 mode: async # broadcasting can be in 'sync' (default) or 'async' modes
 out: # available options 'stdout' and 'cmem'
   - stdout # output to stdout
   - cmem # output to cmem
 group: metrics.k8s.io # group, use 'metrics.k8s.io' for metrics server
 
-# K8s configuratioin (use only when 'origin:kubernetes', default configuration loaded from config.load_kube_config())
+# kafka configuration
+# kafka.host: localhost:9092 # (default kafka host)
+# kafka.topic: k8s.mtrics.nodes # default topic
+
+# K8s configuration (use only when 'origin:kubernetes', default configuration loaded from config.load_kube_config())
 # kubernetes.host: http://localhost:8080
 # kubernetes.key : ?
 
