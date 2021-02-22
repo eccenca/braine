@@ -32,9 +32,9 @@ The relay supports two types of outputstreams `stdout` (default) and `cmem`.
 
 ### Kafka specifics
 
-`kafka.host`: use this parameter to setup the kafka host (default localhost:9092)
+`kafka.host`: use this parameter to setup the kafka host (default `localhost:9092`)
 
-`kafka.topic`: use this parameter to setup the kafka topic (default k8s.mtrics.nodes)
+`kafka.topic`: use this parameter to setup the kafka topic (default `k8s.mtrics.nodes`)
 
 ### Kubernetes specifics
 
