@@ -6,6 +6,7 @@ There are three not standard libraries that required to be preinstalled:
 ```
 pip install yaml # required for reading configuration file
 pip install kubernetes # for kubernetes API
+pip install confluent-kafka # for Kafka API
 pip install cmem-cmempy # for communicating with CMEM
 ```
 
