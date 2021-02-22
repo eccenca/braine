@@ -1,2 +1,2 @@
 # braine
-This repository contains tools developed for the project BRAINE
+This repository contains tools developed for the BRAINE project
