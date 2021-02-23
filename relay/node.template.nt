@@ -1,4 +1,4 @@
-<https://vocab.eccenca.com/itops/node/{name}> <https://vocab.eccenca.com/itops/property/telemetry> <https://vocab.eccenca.com/itops/node/telemetry/{name}/{timestamp}> .
+<https://vocab.eccenca.com/itops/node/{name}> <https://vocab.eccenca.com/itops/property/telemetry> <https://vocab.eccenca.com/itops/node/{name}/telemetry/{timestamp}> .
 <https://vocab.eccenca.com/itops/node/{name}> <http://www.w3.org/2000/01/rdf-schema#label> "{name}"^^<http://www.w3.org/2001/XMLSchema#string> .
 <https://vocab.eccenca.com/itops/node/{name}/telemetry/{timestamp}> a <https://vocab.eccenca.com/itops/Telemetry> .
 <https://vocab.eccenca.com/itops/node/{name}/telemetry/{timestamp}> <https://vocab.eccenca.com/itops/property/telemetry/timestamp> "{timestamp}"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
