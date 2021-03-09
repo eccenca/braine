@@ -1,0 +1,31 @@
+@prefix ecc: <https://ns.eccenca.com/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix unit: <http://www.qudt.org/2.1/vocab/unit> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix itopsp: <https://braine.eccenca.dev/vocabulary/itops/property#> .
+@prefix itopsmeasurep: <https://braine.eccenca.dev/vocabulary/itops/measurement/property#> .
+@prefix itopstelemetryp: <https://braine.eccenca.dev/vocabulary/itops/telemetry/property#> .
+@prefix itopsunit: <https://braine.eccenca.dev/vocabulary/measurement/unit#> .
+
+<https://data.braine-project.eu/itops/kubernetes/> rdf:type void:Dataset ;
+  rdfs:label "Kubernetes ITOPS: Kubernetes IT Operations Knowledge Graph"@en ;
+  rdfs:comment "The Kubernetes ITOPS Knowledge Graph contains all kubernetes data instantiated with the ITOPS ontology."@en ;
+  dct:issued "2021-03-09"^^xsd:date ;
+  owl:imports <https://data.braine-project.eu/di/itops/kubernetes/telemetry/node/> ;
+  dct:modified "2021-03-09"^^xsd:date ;
+  owl:versionInfo "SNAPSHOT" ;
+  dct:rights "Copyright © 2021 eccenca GmbH" ;
+  dct:publisher ecc:eccenca-GmbH ;
+  <http://creativecommons.org/ns#license> <http://creativecommons.org/licenses/by/4.0/> ;
+  dct:creator <https://aksw.org/EdgardMarx>, <http://sebastian.tramp.name> ;
+.
