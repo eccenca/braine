@@ -3,7 +3,7 @@ import yaml, time, threading, json
 # CMEM imports
 from os import environ
 from cmem.cmempy.workspace.projects.project import get_projects
-from cmem.cmempy.workflow import get_workflows
+from cmem.cmempy.workflow.workflow import execute_workflow_io
 from cmem.cmempy.workspace.activities.taskactivity import get_activity_status
 from cmem.cmempy.queries import SparqlQuery
 # Kubernetes imports
@@ -45,6 +45,8 @@ node_triple_template = "node.template.nt"
 pod_triple_templatee = "pod.template.nt"
 update_sparql_template = "query.update.template.sparql"
 update_sparql_graph = "https://vocab.eccenca.com/itops/kubernetes"
+cmem_di_project_name = "KubernetesNodeMetrics"
+cmem_di_task_name = "086bf630-a9bc-4e66-a81c-698bb100b30f_K8sNodeMetricstoITOPSk8sNodeDatasetVariable"
 
 # Load itops transceiver configuration file from config.yaml file
 transceiverConfig = None
@@ -89,6 +91,10 @@ if('cmem.update.template' in transceiverConfig):
     update_sparql_template = transceiverConfig['cmem.update.template']
 if('cmem.update.graph' in transceiverConfig):
     update_sparql_graph = transceiverConfig['cmem.update.graph']
+if('cmem.di.project.name' in transceiverConfig):
+    cmem_di_project_name = transceiverConfig['cmem.di.project.name']
+if('cmem.di.task.name' in transceiverConfig):
+    cmem_di_task_name = transceiverConfig['cmem.di.task.name']
 
 kafka_settings = {
     'bootstrap.servers': kafka_host,
@@ -99,10 +105,22 @@ kafka_settings = {
     'default.topic.config': {'auto.offset.reset': 'smallest'}
 }
 
-def out(kind, name, namespace, timestamp, window, cpu, memory):  
+def out(metrics, kind, name, namespace, timestamp, window, cpu, memory):  
     print("%s\t%s\t%s\t%s\t%s\t%s\t%s" % (kind, name, namespace, timestamp, window, cpu, memory))
 
-def cmem(kind, name, namespace, timestamp, window, cpu, memory):
+def cmem(metrics, kind, name, namespace, timestamp, window, cpu, memory):
+    try:
+        inputFile = "nodes.metrics.k8s.io.json"
+        inMimFormat = "application/json"
+        outMimFormat = "application/n-triples"
+        f = open(inputFile, "w")
+        f.write(json.dumps(metrics))
+        f.close()
+        execute_workflow_io(cmem_di_project_name, cmem_di_task_name, inputFile, inMimFormat, outMimFormat)
+    except Exception as e:
+        print("Exception when broadcasting to CMEM" + ": %s" % e)
+
+def sparql(metrics, kind, name, namespace, timestamp, window, cpu, memory):
     try:
         f = open(update_sparql_template, 'r')
         sparql_query = f.read().replace("{graph}", update_sparql_graph)
@@ -171,11 +189,10 @@ def streamK8sNodeMetrics(nodeMetrics, channels, channelOptions):
         iwindow = iwindow.replace("s", "")
         for channel in channels: # broadcast in different channels
             if(mode == "async"):
-                thr = threading.Thread(target=channelOptions[channel], args=(kind, iname, inamespace, itimestamp, iwindow, icpu, imemory), kwargs={})
+                thr = threading.Thread(target=channelOptions[channel], args=(nodeMetrics, kind, iname, inamespace, itimestamp, iwindow, icpu, imemory), kwargs={})
                 thr.start() # runs
             else:
-                channelOptions[channel](kind, iname, inamespace, itimestamp, iwindow, icpu, imemory)
-            
+                channelOptions[channel](nodeMetrics, kind, iname, inamespace, itimestamp, iwindow, icpu, imemory)          
 
 # Kubernetes configs
 # Configs can be set in Configuration class directly or using helper utility
@@ -188,7 +205,7 @@ else:
         customConfig.api_key['authorization'] = kubernetes_api_key
 
 # Output default options
-channelOptions = {'stdout': out, 'cmem': cmem}
+channelOptions = {'stdout': out, 'cmem': cmem, 'sparql': sparql}
 
 if(origin == "kubernetes"):
     customAPIV1 = None

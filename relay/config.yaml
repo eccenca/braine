@@ -3,7 +3,7 @@ origin: kubernetes # origin 'kubernetes' (using default kubernetes configuraion)
 kind: node # 'node' or 'pod'
 # pod.namespace: default # only possible for kind 'pod'
 version: v1beta1 # api version current supports only 'v1beta1'
-interval: 2 # interval in seconds
+interval: 60 # interval in seconds
 mode: async # broadcasting can be in 'sync' (default) or 'async' modes
 out: # available options 'stdout' and 'cmem'
   - stdout # output to stdout
@@ -19,7 +19,9 @@ group: metrics.k8s.io # group, use 'metrics.k8s.io' for metrics server
 # kubernetes.key : ?
 
 # CMEM configuration
-cmem.update.graph: https://vocab.eccenca.com/itops/kubernetes # target GRAPH
+cmem.update.graph: https://data.braine-project.eu/itops/kubernetes/ # target GRAPH
 cmem.node.template: node.template.nt # node template triples
 cmem.pod.template: pod.template.nt # pod template triples
 cmem.update.template: query.update.template.sparql # SPARQL insert template
+cmem.di.project.name: KubernetesNodeMetrics
+cmem.di.task.name: 086bf630-a9bc-4e66-a81c-698bb100b30f_K8sNodeMetricstoITOPSk8sNodeDatasetVariable
