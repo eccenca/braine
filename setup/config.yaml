@@ -1,0 +1,22 @@
+# Relay configuration
+origin: kubernetes # origin 'kubernetes' (using default kubernetes configuraion) or 'kafka'
+kind: node # 'node' or 'pod'
+# pod.namespace: default # only possible for kind 'pod'
+version: v1beta1 # api version current supports only 'v1beta1'
+interval: 600 # interval in seconds
+mode: async # broadcasting can be in 'sync' (default) or 'async' modes
+out: # available options 'stdout' and 'cmem'
+  - stdout # output to stdout
+  - cmem # output to cmem
+
+# kafka configuration
+# kafka.host: localhost:9092 # (default kafka host)
+# kafka.topic: k8s.mtrics.nodes # default topic
+
+# K8s configuration (use only when 'origin:kubernetes', default configuration loaded from config.load_kube_config())
+# kubernetes.host: http://localhost:8080
+# kubernetes.key : ?
+
+# CMEM configuration
+cmem.di.project.name: KubernetesNodeMetrics
+cmem.di.task.name: e70ae21b-1fbd-4289-a0d7-d9edc4c9ea43_K8sNodeInfotoITOPSK8sNodeInfoto
