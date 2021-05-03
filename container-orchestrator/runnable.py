@@ -34,8 +34,7 @@ ACTIVATING_STATE = "https://braine.eccenca.dev/vocabulary/itops#ImageUnderActiva
 ACTIVE_STATE = "https://braine.eccenca.dev/vocabulary/itops#ImageActive"
 
 # Container Orchestrator DEFAULT configuration
-interval = 1 # default interval
-channels = ['stdout'] # default output channel 
+interval = 1 # default interval 
 
 # Load itops transceiver configuration file from config.yaml file
 transceiverConfig = None
@@ -45,8 +44,8 @@ try:
 except Exception as e:
     print('Exception when opening config.yaml' + ": %s\n" % e)
 
-def out(id, manifest, state):
-    print("%s %s %s" % (id, image, state))
+if('interval' in transceiverConfig):
+    interval = transceiverConfig['interval']
 
 def register(name, manifest):
     try:
@@ -60,15 +59,13 @@ def getImages(state = None):
     try:
         f = open(deployment_state_sparql_template, 'r')
         sparql_query = f.read()
-        # sparql_query = f.read().replace("{graph}", update_sparql_graph)
-        # sparql_query = sparql_query.replace("{telemetry}", triples)
         # print(sparql_query)
         resultsRaw = SparqlQuery(sparql_query).get_results()
         resultsSet = json.loads(resultsRaw)
         images = resultsSet['results']
         return images['bindings']
     except Exception as e:
-        print("Exception when broadcasting to CMEM" + ": %s" % e)
+        print("Exception when retrieving reviewed docker images: %s" % e)
 
 def updateState(id, state):
     try:
@@ -80,10 +77,6 @@ def updateState(id, state):
         SparqlQuery(sparql_query).get_results()
     except Exception as e:
         print("Exception when updating image state" + ": %s" % e)
-
-
-# Output default options
-stateBroadcastChannelOptions = {'stdout': out}
 
 starttime = time.time()
 while True:
