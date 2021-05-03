@@ -12,8 +12,7 @@ pip install cmem-cmempy # for communicating with CMEM
 
 The configuration can be setup by editing the `config.yaml` file as follows:
 
-`out`: use this parameter to add or remove an outputstream channel.
-The relay supports two types of outputstreams `stdout` (default) and `cmem`.
+`interval`: use this parameter to setup the `orchestration` time interval (default 1 second).
 
 ## Updating CMEM credentials
 If you are working with CMEM edit the script `runnable.py` adding your credentiials as follows:
