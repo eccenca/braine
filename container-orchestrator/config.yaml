@@ -1,0 +1,5 @@
+# Relay configuration
+
+interval: 600 # interval in seconds
+db: # available options 'stdout' and 'cmem'
+  - cmem # output to cmem

@@ -1,0 +1,9 @@
+DELETE { graph ?g { ?s <https://braine.eccenca.dev/vocabulary/itops#hasImageState> ?o } }
+INSERT { graph ?g { ?s <https://braine.eccenca.dev/vocabulary/itops#hasImageState> <{state}> } }
+WHERE
+{
+  graph ?g { 	
+    ?s <https://braine.eccenca.dev/vocabulary/itops#hasImageState> ?o .
+  	filter(?s = <{id}>)
+  }
+}
