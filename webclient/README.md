@@ -1,3 +1,5 @@
+![Drag Racing](braine-webclient.png)
+
 ## BRAINE Webclient
 
 The Client UI Application was developed with the intent to facilitate Connector deployment tests.
