@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+	    <title>Image Deployment</title>
+	    <link type="text/css" rel="stylesheet" href="/css/app.css"/>
+	    <style type="text/css">
+			html {
+				font-size: 14px;
+		    }
+	    </style>
+	</h:head>
+
+	<h:body>
+		<h:form>
+		    <p:dataTable
+			        var="image"
+			        selection="#{imageRegistryView.selectedImage}"
+			        selectionMode="single"
+		        	value="#{imageView.list}"
+		        	rowKey="#{image.uri}" styleClass="panel-component">
+					
+		            <p:column headerText="Image">
+	                    <h:outputText value="#{image.name}"/>
+		            </p:column>
+		            
+		            <p:column headerText="Description">
+		                <h:outputText value="#{image.description}"/>
+		            </p:column>
+					        
+			</p:dataTable>
+			<p:commandButton value="Ok" action="#{imageRegistryView.deploy}"/>
+		</h:form>
+	</h:body>
+</html>
