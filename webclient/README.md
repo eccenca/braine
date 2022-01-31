@@ -54,7 +54,7 @@ Before following the next step, verify if the build was successfully performed.
 Go to the project `target` directory and execute the compiled jar with `java`:
 
 ```
-$target % java -jar -Dserver.port=7070 -Dclient.oauth.user=<user> -Dclient.oauth.password=<password> webclient-0.0.1-SNAPSHOT.jar
+$target % java -jar -Dserver.port=7070 -Dclient.oauth.user=<user> -Dclient.oauth.password=<password> webclient-0.0.1-SNAPSHOT.war
 ...
   _______       ______        ________       ________      ___   __       ______
 /_______/\     /_____/\      /_______/\     /_______/\    /__/\ /__/\    /_____/\
