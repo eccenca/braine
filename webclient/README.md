@@ -2,7 +2,7 @@
 
 ## BRAINE Webclient
 
-The Client UI Application was developed with the intent to facilitate Connector deployment tests.
+The Client UI Application was developed with the intent to facilitate BRAINE Service Orchestration.
 
 Before starting, the following repository containing the project must be cloned locally:
 
