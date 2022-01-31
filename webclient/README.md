@@ -28,10 +28,10 @@ Use the parameter `server.port` to setup the client access port, default `7070`.
 
 #### Connector Authentication
 
-Use the following parameters to setup the Connector Authentication at the Client UI:
+Use the following parameters to setup the client Authentication at the Client UI:
 
-- `client.oauth.user` : use this parameter to setup the Connector's user.
-- `client.oauth.password` : use this parameter to setup the Connector's password.
+- `client.oauth.user` : use this parameter to setup the user's username.
+- `client.oauth.password` : use this parameter to setup the user's password.
 
 #### Running
 
