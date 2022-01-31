@@ -38,7 +38,7 @@ public class BraineWebApp {
 	public FilterRegistrationBean<FileUploadFilter> FileUploadFilter() {
 		FilterRegistrationBean<FileUploadFilter> registration = new FilterRegistrationBean<FileUploadFilter>();
 		registration.setFilter(new org.primefaces.webapp.filter.FileUploadFilter());
-		registration.setName("PrimeFaces FileUpload Filter");
+		registration.setName("FileUpload Filter");
 		return registration;
 	}
 

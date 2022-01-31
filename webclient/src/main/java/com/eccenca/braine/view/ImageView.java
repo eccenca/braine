@@ -253,9 +253,6 @@ public class ImageView implements Serializable {
 	                zipEntry = zis.getNextEntry();
 	           }
 	        }
-            catch (IOException e) {
-            	logger.error(e);
-	        }
 	        return null;
 		} else {
 			File in =  new File(filePath);
