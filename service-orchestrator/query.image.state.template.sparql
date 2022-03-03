@@ -1,0 +1,10 @@
+SELECT DISTINCT ?id ?label ?state ?manifest WHERE { 
+    ?id a <https://braine.eccenca.dev/vocabulary/itops#DockerImage> . 
+    ?id <http://www.w3.org/2000/01/rdf-schema#label> ?label .
+    optional {
+	   ?id <https://braine.eccenca.dev/vocabulary/itops#hasImageState> ?state .
+    }
+    optional {
+       ?id <https://braine.eccenca.dev/vocabulary/itops#manifest> ?manifest .
+    }
+}
