@@ -239,7 +239,7 @@
 									            	<div class="card">
 								            			<p:outputPanel id="manifestPanel" >
 													         <p:inplace rendered="#{imageView.isManifestEditMode(image.uri)}" editor="true">
-											                	<p:ajax event="save" listener="#{imageView.save(image.uri)}" />
+											                	<p:ajax event="save" listener="#{imageView.update(image.uri)}" />
 							                   					<f:facet name="output">
 													               	<h:outputText escape="false" value="#{fn:replace(empty image.manifest ? 'Click here to add a manifest': image.manifest,'\\n','&lt;br/&gt;')}"/>
 													            </f:facet>
