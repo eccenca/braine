@@ -26,6 +26,7 @@ import javax.inject.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.event.FilesUploadEvent;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.file.UploadedFile;
 
@@ -128,6 +129,25 @@ public class ImageView implements Serializable {
 			}
 		}
         FacesMessage message = new FacesMessage("Successful", event.getFiles().getFiles().get(0).getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+	public void handleFileUpload(FileUploadEvent event) {
+		String imageURI = String.valueOf(event.getComponent().getAttributes().get("image"));
+		Image image = imageMap.get(imageURI);
+		List<String> imageFiles = image.getFiles();
+		UploadedFile file =  event.getFile();
+		try {
+			service.save(image.getName(), file);
+			imageFiles.add(file.getFileName());
+			update(imageURI);
+		} catch (IOException e) {
+			logger.error(e);
+			FacesMessage message = new FacesMessage("Error", "An error occurred while uploading the file: " + file.getFileName());
+		    FacesContext.getCurrentInstance().addMessage(null, message);
+		    return;
+		}
+        FacesMessage message = new FacesMessage("Successful", event.getFile().getFileName() + " is uploaded.");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 	

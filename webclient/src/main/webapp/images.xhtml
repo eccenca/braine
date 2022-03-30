@@ -203,13 +203,12 @@
 			                  				<p:dataTable var="file" id="imageTable" value="#{image.files}" styleClass="panel-component">
 			                  					<f:facet name="header">
 			                  						<p:fileUpload
-														multiple="true"
 														process="@this"
 														update="@form"
 														mode="simple"
 														skinSimple="true"
 											            auto="true"
-											            listener="#{imageView.handleFilesUpload}">
+											            listener="#{imageView.handleFileUpload}">
 											            <f:attribute name="image" value="#{image.uri}"/>
 											        </p:fileUpload>
 			                  					</f:facet>

@@ -38,7 +38,7 @@ public class ImageRegistryView implements Serializable {
 
 	protected static final Logger logger = LogManager.getLogger();
 	
-	private static final String IMAGE_REPOSITORY_NAMESPACE = "https://data.braine-project.eu/itops/docker/image/";
+	private static final String IMAGE_REPOSITORY_NAMESPACE = "https://data.braine-project.eu/itops/docker/registry/";
 	
 	@Inject
     private ImageRegistryService service;
