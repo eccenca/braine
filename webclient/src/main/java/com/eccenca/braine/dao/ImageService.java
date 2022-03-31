@@ -88,46 +88,46 @@ public class ImageService {
 		sparqlService.delete(uri);
 	}
 
-	public void save(String imageName, UploadedFile file) throws IOException {
-		File imageDir = new File(getImagePath(imageName));
+	public void save(String imageUri, UploadedFile file) throws IOException {
+		File imageDir = new File(getImagePath(imageUri));
 		imageDir.mkdir();
-		File newFile = new File(getFilePath(imageName, file.getFileName()));
+		File newFile = new File(getFilePath(imageUri, file.getFileName()));
 		newFile.createNewFile();
 		FileUtils.copyInputStreamToFile(file.getInputStream(), newFile);
 	}
 
-	public void delete(String imageName, String fileUri) {
-		File newFile = new File(getFilePath(imageName, fileUri));
+	public void delete(String imageUri, String fileUri) {
+		File newFile = new File(getFilePath(imageUri, fileUri));
 		newFile.delete();
 	}
 
-	public File getManifestFileWithContent(String imageName, String manifestContent) throws IOException {
-		File manifestFile = new File(getFilePath(imageName, "Dockerfile"));
+	public File getManifestFileWithContent(String imageUri, String manifestContent) throws IOException {
+		File manifestFile = new File(getFilePath(imageUri, "Dockerfile"));
 		FileUtils.writeStringToFile(manifestFile, manifestContent, StandardCharsets.UTF_8);
 		return manifestFile;
 	}
 
-	public String getImagePath(String imageName) {
-		return fileRepo.getPath() + File.separator + imageName.replaceAll(" ", "");
+	public String getImagePath(String imageUri) {
+		return fileRepo.getPath() + File.separator + Integer.toString(imageUri.hashCode());
 	}
 
-	public String getFilePath(String imageName, String filePath) {
-		return getImagePath(imageName) + File.separator + filePath;
+	public String getFilePath(String imageUri, String filePath) {
+		return getImagePath(imageUri) + File.separator + filePath;
 	}
 
-	public String getLocalFilePath(String imageName, String filePath) {
+	public String getLocalFilePath(String imageUri, String filePath) {
 		if (filePath.contains(".zip/")) {
 			String[] subPaths = filePath.split(".zip/");
 			String extractedFilePath = subPaths[0];
 			String zipFileName = extractedFilePath + ".zip";
 			String insideEntryPath = subPaths[1];
 			try {
-				File file = new File(getImagePath(imageName) + File.separator + extractedFilePath + File.separator
+				File file = new File(getImagePath(imageUri) + File.separator + extractedFilePath + File.separator
 						+ insideEntryPath);
 				if (!file.exists()) {
 					net.lingala.zip4j.core.ZipFile zipFile = new net.lingala.zip4j.core.ZipFile(
-							getFilePath(imageName, zipFileName));
-					zipFile.extractAll(getFilePath(imageName, extractedFilePath));
+							getFilePath(imageUri, zipFileName));
+					zipFile.extractAll(getFilePath(imageUri, extractedFilePath));
 				}
 				return file.getPath();
 			} catch (net.lingala.zip4j.exception.ZipException e) {
@@ -135,7 +135,7 @@ public class ImageService {
 			}
 			return null;
 		} else {
-			return getFilePath(imageName, filePath);
+			return getFilePath(imageUri, filePath);
 		}
 	}
 

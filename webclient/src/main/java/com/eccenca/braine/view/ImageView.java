@@ -84,9 +84,9 @@ public class ImageView implements Serializable {
 		String manifestFile = image.getManifestFile();
 		try {
 			if(manifestFile != null && !manifestFile.isEmpty()) {
-				String encoding = getEncoding(service.getFilePath(image.getName(), manifestFile));
+				String encoding = getEncoding(service.getFilePath(image.getUri(), manifestFile));
 				if(encoding != null && encoding.equals("UTF8")) {
-					image.setManifest(service.getFileContent(service.getFilePath(image.getName(), manifestFile)));
+					image.setManifest(service.getFileContent(service.getFilePath(image.getUri(), manifestFile)));
 				} else {
 					image.setManifest(" ENCODING NOT SUPPORTED ");
 				}
@@ -100,9 +100,9 @@ public class ImageView implements Serializable {
 		String variableFile = image.getVariableFile();
 		try {
 			if(variableFile != null && !variableFile.isEmpty()) {
-				String encoding = getEncoding(service.getFilePath(image.getName(), variableFile));
+				String encoding = getEncoding(service.getFilePath(image.getUri(), variableFile));
 				if(encoding != null && encoding.equals("UTF8")) {
-					image.setVariables(service.getFileContent(service.getFilePath(image.getName(), variableFile)));
+					image.setVariables(service.getFileContent(service.getFilePath(image.getUri(), variableFile)));
 				} else {
 					image.setVariables(" ENCODING NOT SUPPORTED ");
 				}
@@ -118,7 +118,7 @@ public class ImageView implements Serializable {
 		List<String> imageFiles = image.getFiles();
 		for(UploadedFile file :  event.getFiles().getFiles()) {
 			try {
-				service.save(image.getName(), file);
+				service.save(image.getUri(), file);
 				imageFiles.add(file.getFileName());
 				update(imageURI);
 			} catch (IOException e) {
@@ -138,7 +138,7 @@ public class ImageView implements Serializable {
 		List<String> imageFiles = image.getFiles();
 		UploadedFile file =  event.getFile();
 		try {
-			service.save(image.getName(), file);
+			service.save(image.getUri(), file);
 			imageFiles.add(file.getFileName());
 			update(imageURI);
 		} catch (IOException e) {
@@ -160,10 +160,13 @@ public class ImageView implements Serializable {
 	
 	public void remove(String imageUri) {
 		try {
-			service.delete(imageUri);
 			Image image = imageMap.get(imageUri);
+			for(String fileUri : image.getFiles()) {
+				service.delete(image.getUri(), fileUri);
+			}
 			imageList.remove(image);
 			imageMap.remove(imageUri);
+			service.delete(imageUri);
 			FacesMessage message = new FacesMessage("Successful", image.getName() + " was removed.");
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		} catch (Exception e) {
@@ -175,7 +178,7 @@ public class ImageView implements Serializable {
 		try {
 			Image image = imageMap.get(imageUri);
 			image.getFiles().remove(fileUri);
-			service.delete(image.getName(), fileUri);
+			service.delete(image.getUri(), fileUri);
 			service.update(image);
 			FacesMessage message = new FacesMessage("Successful", fileUri + " was removed from " + image.getName() + ".");
 	        FacesContext.getCurrentInstance().addMessage(null, message);
@@ -192,7 +195,7 @@ public class ImageView implements Serializable {
 			SelectItem fileOption = null;
 			if(file.endsWith(".zip")) {
 				fileOption = new SelectItemGroup(file);
-				List<String> zipInternalFiles = getZipFileEntries(service.getFilePath(image.getName(), file));
+				List<String> zipInternalFiles = getZipFileEntries(service.getFilePath(image.getUri(), file));
 				for(String zipFileName : zipInternalFiles) {
 					if(!zipFileName.contains("__MACOSX/")) {
 						fileOption = new SelectItem(zipFileName);
