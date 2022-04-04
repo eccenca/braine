@@ -8,6 +8,12 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+/**
+ *  ImageRegistryService
+ * 
+ * @author edgardmarx
+ *
+ */
 @Named
 @SessionScoped
 public class ImageRegistryService {
@@ -53,8 +59,8 @@ public class ImageRegistryService {
 		sparqlService.insert(imageRegistry, imageToTriple, attrMapping);
 	}
 	
-	public void delete(Image image) {
-		sparqlService.delete(image.getUri());
+	public void delete(ImageRegistry imageRegistry) {
+		sparqlService.delete(imageRegistry.getUri());
 	}
 	
 	public void delete(String uri) {

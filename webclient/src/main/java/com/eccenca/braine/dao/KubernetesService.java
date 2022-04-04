@@ -24,16 +24,11 @@ import com.github.dockerjava.core.DockerClientImpl;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
 
-/**
- * 
- * @author edgardmarx
- *
- */
 @Named
 @SessionScoped
-public class DockerService {
+public class KubernetesService {
 
-	private static final Logger logger = LogManager.getLogger(DockerService.class);
+	private static final Logger logger = LogManager.getLogger(KubernetesService.class);
 	
 	@Inject
     private ImageService imageService;
@@ -85,10 +80,10 @@ public class DockerService {
 			File manifestFile = null;
 			String manifestFilePath = selectedImage.getManifestFile();
 			if(manifestFilePath == null) {
-				manifestFile = imageService.getManifestFileWithContent(selectedImage.getUri(), selectedImage.getManifest());
+				manifestFile = imageService.getManifestFileWithContent(selectedImage.getName(), selectedImage.getManifest());
 			} else {
 				String manifestFileName = selectedImage.getManifestFile();
-				String filePath = imageService.getLocalFilePath(selectedImage.getUri(), manifestFileName);
+				String filePath = imageService.getLocalFilePath(selectedImage.getName(), manifestFileName);
 				manifestFile = new File(filePath);
 			}
 			com.github.dockerjava.api.command.BuildImageResultCallback callback = new BuildImageResultCallback() {

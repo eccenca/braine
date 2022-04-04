@@ -41,6 +41,26 @@ public abstract class TriplesToInstanceMarshal <T> implements  Marshal<T, List<T
 		return null;
 	}
 	
+	protected Integer getFirstAsInt(String attr, Map<String, List<Node>> instance, Map<String, String> attrMapping) {
+		List<Node> nodes = instance.get(attrMapping.get(attr));
+		if(nodes != null && nodes.size() > 0) {
+			Node node = nodes.get(0);
+			return (Integer) node.getLiteral().getValue();
+		}
+		return null;
+	}
+
+	protected Boolean getFirstAsBoolean(String attr, Map<String, List<Node>> instance,
+			Map<String, String> attrMapping) {
+		List<Node> nodes = instance.get(attrMapping.get(attr));
+		if(nodes != null && nodes.size() > 0) {
+			Node node = nodes.get(0);
+			return (Boolean) node.getLiteral().getValue();
+		}
+		return null;
+	}
+
+	
 	protected List<String> getResourceList(String attr, Map<String, List<Node>> instance, Map<String, String> attrMapping) {
 		List<Node> nodes = instance.get(attrMapping.get(attr));
 		List<String> resources = new ArrayList<String>();

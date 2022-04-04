@@ -12,33 +12,28 @@ import org.apache.jena.vocabulary.RDF;
  * @author edgardmarx
  *
  */
-public class ImageRegistryToTripleMarshal extends AbstractObjectToTripleMarshal implements Marshal<List<Triple>, ImageRegistry> {
+public class ProcessingUnitToTripleMarshal extends AbstractObjectToTripleMarshal implements Marshal<List<Triple>, ProcessingUnit> {
 
 	@Override
-	public List<Triple> marshal(ImageRegistry instance, Map<String, String> attrMapping) {
+	public List<Triple> marshal(ProcessingUnit instance, Map<String, String> attrMapping) {
 		List<Triple> triples = new ArrayList<Triple>();
 		
 		addLiteral(triples,
 				instance.getUri(),
-				attrMapping.get(ImageRegistry.LABEL_ATTR),
+				attrMapping.get(ProcessingUnit.LABEL_ATTR),
 				instance.getName(),
 				"en"
 		);
-		
+
 		addLiteral(triples,
 				instance.getUri(),
-				attrMapping.get(ImageRegistry.DESCRIPTION_ATTR),
+				attrMapping.get(ProcessingUnit.DESCRIPTION_ATTR),
 				instance.getDescription(), "en");
-		
-		addLiteral(triples,
-				instance.getUri(),
-				attrMapping.get(ImageRegistry.NETWORK_ADDRESS_ATTR),
-				instance.getNetworkAddress(), null);
 
 		addResource(triples, 
 					instance.getUri(),
 					RDF.type.toString(),
-					"https://braine.eccenca.dev/vocabulary/itops#DockerRegistry");
+					"https://braine.eccenca.dev/vocabulary/itops#ProcessingUnit");
 
 		return triples;
 	}

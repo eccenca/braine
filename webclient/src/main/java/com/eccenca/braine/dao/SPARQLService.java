@@ -104,6 +104,10 @@ public class SPARQLService {
 	}
 	
 	public <T> List<T> list(String type, Marshal<T, List<Triple>> marshal, Map<String, String> attrMapping) {
+		return list(graph, type, marshal, attrMapping);
+	}
+	
+	public <T> List<T> list(String graph, String type, Marshal<T, List<Triple>> marshal, Map<String, String> attrMapping) {
 		String query = listQueryTemplate.replace(TYPE_TEMPLATE_VAR, type);
 		query = query.replace(GRAPH_TEMPLATE_VAR, graph);
 		QuerySolutionToStringMarshal entityIndentifiersMarshal = new QuerySolutionToStringMarshal();
@@ -112,7 +116,7 @@ public class SPARQLService {
 		List<String> entitiesIdentifiers = query(query, entityIndentifiersMarshal, entityIndentifiersMapping);
 		List<T> entities = new ArrayList<T>();
 		for(String entityURI : entitiesIdentifiers) {
-			T entity = get(entityURI, marshal, attrMapping);
+			T entity = get(graph, entityURI, marshal, attrMapping);
 			entities.add(entity);
 		}
 		return entities;
@@ -179,7 +183,7 @@ public class SPARQLService {
 		return true;
 	}
 	
-	public <T> T get(String uri, Marshal<T, List<Triple>> instantiator, Map<String, String> attrMapping) {
+	public <T> T get(String graph, String uri, Marshal<T, List<Triple>> instantiator, Map<String, String> attrMapping) {
 		String query = selectQueryTemplate.replace(URI_TEMPLATE_VAR, uri);
 		query = query.replace(GRAPH_TEMPLATE_VAR, graph);
 		
@@ -191,5 +195,9 @@ public class SPARQLService {
 		List<Triple> triples = query(query, tripleMarshal, tripleMapping);
 		
 		return instantiator.marshal(triples, attrMapping);
+	}
+	
+	public <T> T get(String uri, Marshal<T, List<Triple>> instantiator, Map<String, String> attrMapping) {
+		return get(graph, uri, instantiator, attrMapping);
 	}
 }

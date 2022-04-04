@@ -1,11 +1,6 @@
 package com.eccenca.braine.dao;
 
-/**
- * 
- * @author edgardmarx
- *
- */
-public class ImageRegistry extends Resource {
+public class ServiceRegistry extends Resource {
 
 	/**
 	 * 
@@ -19,7 +14,7 @@ public class ImageRegistry extends Resource {
 	
 	private String networkAddress = null;
 	
-	public ImageRegistry(String name) {
+	public ServiceRegistry(String name) {
 		super(name);
 	}
 

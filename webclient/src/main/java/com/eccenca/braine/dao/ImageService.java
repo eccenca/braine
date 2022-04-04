@@ -25,6 +25,11 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.model.file.UploadedFile;
 import org.springframework.beans.factory.annotation.Value;
 
+/**
+ * 
+ * @author edgardmarx
+ *
+ */
 @Named
 @SessionScoped
 public class ImageService {
@@ -60,7 +65,6 @@ public class ImageService {
 	}
 
 	public List<Image> list() {
-
 		return sparqlService.list(DATA_TYPE, tripleToImage, attrMapping);
 	}
 

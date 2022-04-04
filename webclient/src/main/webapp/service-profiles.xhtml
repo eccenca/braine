@@ -9,7 +9,7 @@
 
 <h:head>
 
-  <title>BRAINE Service Manager - Image Catalog</title>
+  <title>BRAINE Service Manager - Service Profiles</title>
  
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -98,7 +98,7 @@
             <hr class="sidebar-divider"/>
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="images.xhtml">
                     <span>Catalog</span></a>
             </li>
@@ -109,7 +109,7 @@
                     <span>Registries</span></a>
             </li>
             
-                         <!-- Heading -->
+            <!-- Heading -->
             <div class="sidebar-heading">
                 Services
             </div>
@@ -118,10 +118,11 @@
             <hr class="sidebar-divider"/>
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="service-profiles.xhtml">
                     <span>Catalog</span></a>
             </li>
+            
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block"/>
@@ -159,26 +160,26 @@
 					        <div class="card">
 							    <p:messages id="msgs" showDetail="true" closable="true"/>
 						        <p:dataTable
-						        	id="imageTable"
-						        	widgetVar="imageTable"
-							        var="image"
-						        	value="#{imageView.list}"
+						        	id="serviceProfileTable"
+						        	widgetVar="serviceProfileTable"
+							        var="profile"
+						        	value="#{serviceProfileView.list}"
 						        	editable="true"
-						        	rowKey="#{image.uri}">
+						        	rowKey="#{profile.uri}">
 						        	
-						        	<p:ajax event="rowEdit" listener="#{imageView.onRowEdit}" update="@form:contentPanel:msgs"/>
+						        	<p:ajax event="rowEdit" listener="#{serviceProfileView.onRowEdit}" update="@form:contentPanel:msgs"/>
 						            
 						            <p:column style="width:2rem">
 						                <p:rowToggler/>
 						            </p:column>
 						
-						            <p:column headerText="Image">
+						            <p:column headerText="Service Profile">
 						              	<p:cellEditor>
 						                    <f:facet name="output">
-						                        <h:outputText value="#{image.name}"/>
+						                        <h:outputText value="#{profile.name}"/>
 						                    </f:facet>
 						                    <f:facet name="input">
-						                        <p:inputText style="width:100%" value="#{image.name}"/>
+						                        <p:inputText style="width:100%" value="#{profile.name}"/>
 						                    </f:facet>
 						                </p:cellEditor>
 						            </p:column>
@@ -186,17 +187,17 @@
 						            <p:column headerText="Description">
 						              	<p:cellEditor>
 						                    <f:facet name="output">
-						                        <h:outputText value="#{image.description}"/>
+						                        <h:outputText value="#{profile.description}"/>
 						                    </f:facet>
 						                    <f:facet name="input">
-						                        <p:inputText style="width:100%" value="#{image.description}"/>
+						                        <p:inputText style="width:100%" value="#{profile.description}"/>
 						                    </f:facet>
 						                </p:cellEditor>
 						            </p:column>
 						            
 						            <p:column style="width:8rem">
 						                <p:rowEditor editTitle="Edit Row" style="padding:3px;float: left;" cancelTitle="Cancel Edit" saveTitle="Save Row"/>
-						                <p:commandButton title="Remove" action="#{imageView.remove(image.uri)}" 
+						                <p:commandButton title="Remove" action="#{serviceProfileView.remove(profile.uri)}" 
 						                	style="padding:5px;float: left;"  
 						                	icon="pi pi-trash"
 						                	update="@form"
@@ -207,88 +208,131 @@
 							        <f:facet name="footer">
 						                  <p:commandButton value="New"
 										    	process="@this"
-										    	oncomplete="PF('imageTable').addRow();"
-										    	action="#{imageView.newImage()}"/>
+										    	oncomplete="PF('serviceProfileTable').addRow();"
+										    	action="#{serviceProfileView.newObject()}"/>
 						            </f:facet>
 						
 									<p:rowExpansion style="background-color: #ededed;">
 										<p:outputPanel style="display:grid;">
-											<h3>Files</h3>					        					
-			                  				<p:dataTable var="file" id="imageTable" value="#{image.files}" styleClass="panel-component">
-			                  					<f:facet name="header">
-			                  						<p:fileUpload
-														process="@this"
-														update="@form"
-														mode="simple"
-														skinSimple="true"
-											            auto="true"
-											            listener="#{imageView.handleFileUpload}">
-											            <f:attribute name="image" value="#{image.uri}"/>
-											        </p:fileUpload>
-			                  					</f:facet>
-									            <p:column>
-									                <h:outputText value="#{file}" />
-									            </p:column>
-									            <p:column style="width:8rem">
-									                <p:commandButton title="Remove" action="#{imageView.remove(image.uri, file)}" 
-									                	style="padding:5px;float: left;"
-									                	icon="pi pi-trash"
-									                	update="@form"
-									                	styleClass="rounded-button ui-button-danger ui-button-flat">
-									                </p:commandButton>
-										        </p:column>
-									        </p:dataTable>
-									        <h3>Setup</h3>	
-				                   			<p:tabView styleClass="panel-component" activeIndex="#{imageView.tab}">
+									        <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-3, ui-grid-col-10" >
+
+										        <h:outputLabel value="CPU:"/>
+										        <p:inplace editor="true">
+										            <p:ajax event="save" listener="#{serviceProfileView.update(profile.uri)}" />
+										            <f:facet name="output">
+										               <h:outputText value="#{empty profile.processingUnit? 'Default' : serviceProfileView.getProcessingUnit(profile.processingUnit)}"/>
+										            </f:facet>
+										            <f:facet name="input">
+										                <p:selectOneMenu id="group" value="#{profile.processingUnit}">
+										                    <f:selectItem itemLabel="Default" itemValue=""/>
+										                    <f:selectItems 
+										                    	itemLabel="#{entry.value}"
+										                    	itemValue="#{entry.key}"
+										                    	var="entry"
+										                    	value="#{serviceProfileView.cpuMap.entrySet()}"/>
+										                </p:selectOneMenu>
+										            </f:facet>
+											    </p:inplace>
+											    
+											    <h:outputLabel value="Network Slices:"/>
+										        <p:inplace editor="true">
+										            <p:ajax event="save" listener="#{serviceProfileView.update(profile.uri)}" />
+										            <f:facet name="output">
+										                <h:outputText value="#{empty profile.slices? 'Default' : profile.slices}"/>
+										            </f:facet>
+										            <f:facet name="input">
+												        <p:spinner value="#{profile.slices}"/>
+										            </f:facet>
+											    </p:inplace>
+											    
+											    <h:outputLabel value="Tenants:"/>
+										        <p:inplace editor="true">
+										            <p:ajax event="save" listener="#{serviceProfileView.update(profile.uri)}" />
+										            <f:facet name="output">
+										                <h:outputText value="#{empty profile.tenants? 'Default' : profile.tenants}"/>
+										            </f:facet>
+										            <f:facet name="input">
+												        <p:spinner value="#{profile.tenants}"/>
+										            </f:facet>
+											    </p:inplace>
+											    
+											    <h:outputLabel value="Number of PODs"/>
+										        <p:inplace editor="true">
+										            <p:ajax event="save" listener="#{serviceProfileView.update(profile.uri)}" />
+										            <f:facet name="output">
+										                <h:outputText value="#{empty profile.numberOfPODs? 'Default' : profile.numberOfPODs}"/>
+										            </f:facet>
+										            <f:facet name="input">
+												            <p:spinner value="#{profile.numberOfPODs}"/>
+										            </f:facet>
+											    </p:inplace>
+											    
+											    <h:outputLabel value="Number of CPUs:"/>
+										        <p:inplace editor="true">
+										            <p:ajax event="save" listener="#{serviceProfileView.update(profile.uri)}" />
+										            <f:facet name="output">
+										                <h:outputText value="#{empty profile.numberOfCPUs? 'Default' : profile.numberOfCPUs}"/>
+										            </f:facet>
+										            <f:facet name="input">
+												        <p:spinner value="#{profile.numberOfCPUs}"/>
+										            </f:facet>
+											    </p:inplace>
+
+										        <h:outputLabel value="Ephemeral Storage:"/>
+										        <p:inplace editor="true">
+										            <p:ajax event="save" listener="#{serviceProfileView.update(profile.uri)}" />
+										            <f:facet name="output">
+										                <h:outputText value="#{empty profile.storage? 'Default' : profile.storage}"/>
+										            </f:facet>
+										            <f:facet name="input">
+												        <p:spinner value="#{profile.storage}"/> MB
+										            </f:facet>
+											    </p:inplace>
+										        
+										        <h:outputLabel value="Use Encryption:"/>
+										        <p:inplace editor="true">
+										        	<p:ajax event="save" listener="#{serviceProfileView.update(profile.uri)}" />
+										            <f:facet name="output">
+										               <h:outputText value="#{empty profile.useEncryption? 'Use Registry Default' : profile.useEncryption}"/>
+										            </f:facet>
+										            <f:facet name="input">
+										                <p:selectBooleanCheckbox value="#{profile.useEncryption}"/>
+										            </f:facet>
+											    </p:inplace>
+
+										    </p:panelGrid>
+										    
+										    
+				                   			<p:tabView styleClass="panel-component">
 									            <p:tab title="Manifest">
-									            	<p:selectOneMenu styleClass="panel-component" value="#{image.manifestFile}">
-									                    <f:selectItem itemLabel="New" itemValue=""/>
-									                    <f:selectItems value="#{imageView.getImageFiles(image.uri)}"/>
-									                    <p:ajax event="itemSelect" 
-															        update="@parent:@parent:manifestPanel"
-															        listener="#{imageView.setManifestFile(image.uri, image.manifestFile)}"/>
-									                </p:selectOneMenu>
-													
 									            	<div class="card">
 								            			<p:outputPanel id="manifestPanel" >
-													         <p:inplace rendered="#{imageView.isManifestEditMode(image.uri)}" editor="true">
-											                	<p:ajax event="save" listener="#{imageView.update(image.uri)}" />
+													         <p:inplace editor="true">
+											                	<p:ajax event="save" listener="#{serviceProfileView.update(profile.uri)}" />
 							                   					<f:facet name="output">
-													               	<h:outputText escape="false" value="#{fn:replace(empty image.manifest ? 'Click here to add a manifest': image.manifest,'\\n','&lt;br/&gt;')}"/>
+													               	<h:outputText escape="false" value="#{fn:replace(empty profile.manifest ? 'Click here to add a manifest': profile.manifest,'\\n','&lt;br/&gt;')}"/>
 													            </f:facet>
 													            <f:facet name="input">
-													                <p:inputTextarea rows="17" cols="70" value="#{image.manifest}" autoResize="false"/>
+													                <p:inputTextarea rows="17" cols="70" value="#{profile.manifest}" autoResize="false"/>
 													            </f:facet>
 												        	</p:inplace>
-													    
-													        <h:outputText rendered="#{!(imageView.isManifestEditMode(image.uri))}" escape="false" value="#{fn:replace(empty image.manifest ? 'Click here to add a manifest': image.manifest,'\\n','&lt;br/&gt;')}"/>
 														</p:outputPanel>
 													</div>
 									            </p:tab>
 									            <p:tab title="Variables">
-									               <p:selectOneMenu styleClass="panel-component" value="#{image.variableFile}">
-									                    <f:selectItem itemLabel="New" itemValue=""/>
-									                    <f:selectItems value="#{imageView.getImageFiles(image.uri)}"/>
-									                    <p:ajax event="itemSelect"
-															        update="@parent:@parent:variablePabel"
-															        listener="#{imageView.setVariablesFile(image.uri, image.variableFile)}"/>
-									               </p:selectOneMenu>
-			
 												   <div class="card">
 														<p:outputPanel id="variablePabel" >
-															<p:inplace rendered="#{imageView.isVariablesEditMode(image.uri)}" editor="true">
-											                	<p:ajax event="save" listener="#{imageView.update(image.uri)}" />
+															<p:inplace editor="true">
+											                	<p:ajax event="save" listener="#{serviceProfileView.update(profile.uri)}" />
 						                   						<f:facet name="output">
-													               	<h:outputText escape="false" value="#{fn:replace(empty image.variables ? 'Click here to ser a variable': image.variables,'\\n','&lt;br/&gt;')}"/>
+													               	<h:outputText escape="false" value="#{fn:replace(empty profile.variables ? 'Click here to add a variable': profile.variables,'\\n','&lt;br/&gt;')}"/>
 													            </f:facet>
 													            <f:facet name="input">
-													                <p:inputTextarea rows="17" cols="70" value="#{image.variables}" autoResize="false"/>
+													                <p:inputTextarea rows="17" cols="70" value="#{profile.variables}" autoResize="false"/>
 													            </f:facet>
 												        	</p:inplace>
-												        	<h:outputText rendered="#{!(imageView.isVariablesEditMode(image.uri))}" escape="false" value="#{fn:replace(empty image.variables ? 'Click here to set a variable': image.variables,'\\n','&lt;br/&gt;')}"/>
 												   		</p:outputPanel>
 												   </div>
-													
 								           		</p:tab>
 									        </p:tabView>
 								      	</p:outputPanel>

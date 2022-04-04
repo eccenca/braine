@@ -7,6 +7,11 @@ import java.util.Map;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.vocabulary.RDF;
 
+/**
+ * 
+ * @author edgardmarx
+ *
+ */
 public class ImageToTripleMarshal extends AbstractObjectToTripleMarshal implements Marshal<List<Triple>, Image> {
 
 	@Override

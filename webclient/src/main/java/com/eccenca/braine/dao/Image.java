@@ -3,6 +3,11 @@ package com.eccenca.braine.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author edgardmarx
+ *
+ */
 public class Image extends Resource {
 
 	/**

@@ -8,6 +8,11 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 
+/**
+ * 
+ * @author edgardmarx
+ *
+ */
 public abstract class AbstractObjectToTripleMarshal {
 	
 
@@ -26,12 +31,35 @@ public abstract class AbstractObjectToTripleMarshal {
 		}
 	}
 	
+	protected void addLiteral(List<Triple> triples, String resourceUri, String propertyURI, Integer propertyValue) {
+		if(propertyValue != null) {
+			Model model = ModelFactory.createDefaultModel();
+			org.apache.jena.rdf.model.Resource resource = model.createResource(resourceUri);
+			Property property = model.createProperty(propertyURI);
+			Literal labelValue = model.createTypedLiteral(propertyValue);
+			triples.add(new Triple(resource.asNode(), property.asNode(), labelValue.asNode()));
+		}
+	}
+	
+	
+	protected void addLiteral(List<Triple> triples, String resourceUri, String propertyURI, Boolean propertyValue) {
+		if(propertyValue != null) {
+			Model model = ModelFactory.createDefaultModel();
+			org.apache.jena.rdf.model.Resource resource = model.createResource(resourceUri);
+			Property property = model.createProperty(propertyURI);
+			Literal labelValue = model.createTypedLiteral(propertyValue);
+			triples.add(new Triple(resource.asNode(), property.asNode(), labelValue.asNode()));
+		}
+	}
+	
 	protected void addResource(List<Triple> triples, String resourceUri, String propertyURI, String propertyValueURI) {
-		Model model = ModelFactory.createDefaultModel();
-		org.apache.jena.rdf.model.Resource resource = model.createResource(resourceUri);
-		Property property = model.createProperty(propertyURI);
-		org.apache.jena.rdf.model.Resource	propertyValue = model.createResource(propertyValueURI);
-		triples.add(new Triple(resource.asNode(), property.asNode(), propertyValue.asNode()));
+		if(propertyValueURI != null) {
+			Model model = ModelFactory.createDefaultModel();
+			org.apache.jena.rdf.model.Resource resource = model.createResource(resourceUri);
+			Property property = model.createProperty(propertyURI);
+			org.apache.jena.rdf.model.Resource	propertyValue = model.createResource(propertyValueURI);
+			triples.add(new Triple(resource.asNode(), property.asNode(), propertyValue.asNode()));
+		}
 	}
 	
 	protected void addResource(List<Triple> triples, String resourceURI, String propertyURI, List<String> propertyValueURIs) {

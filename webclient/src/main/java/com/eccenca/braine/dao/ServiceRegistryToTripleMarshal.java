@@ -7,38 +7,33 @@ import java.util.Map;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.vocabulary.RDF;
 
-/**
- * 
- * @author edgardmarx
- *
- */
-public class ImageRegistryToTripleMarshal extends AbstractObjectToTripleMarshal implements Marshal<List<Triple>, ImageRegistry> {
+public class ServiceRegistryToTripleMarshal extends AbstractObjectToTripleMarshal implements Marshal<List<Triple>, ServiceRegistry> {
 
 	@Override
-	public List<Triple> marshal(ImageRegistry instance, Map<String, String> attrMapping) {
+	public List<Triple> marshal(ServiceRegistry instance, Map<String, String> attrMapping) {
 		List<Triple> triples = new ArrayList<Triple>();
 		
 		addLiteral(triples,
 				instance.getUri(),
-				attrMapping.get(ImageRegistry.LABEL_ATTR),
+				attrMapping.get(ServiceRegistry.LABEL_ATTR),
 				instance.getName(),
 				"en"
 		);
 		
 		addLiteral(triples,
 				instance.getUri(),
-				attrMapping.get(ImageRegistry.DESCRIPTION_ATTR),
+				attrMapping.get(ServiceRegistry.DESCRIPTION_ATTR),
 				instance.getDescription(), "en");
 		
 		addLiteral(triples,
 				instance.getUri(),
-				attrMapping.get(ImageRegistry.NETWORK_ADDRESS_ATTR),
+				attrMapping.get(ServiceRegistry.NETWORK_ADDRESS_ATTR),
 				instance.getNetworkAddress(), null);
 
 		addResource(triples, 
 					instance.getUri(),
 					RDF.type.toString(),
-					"https://braine.eccenca.dev/vocabulary/itops#DockerRegistry");
+					"https://braine.eccenca.dev/vocabulary/itops#ServiceRegistry");
 
 		return triples;
 	}
