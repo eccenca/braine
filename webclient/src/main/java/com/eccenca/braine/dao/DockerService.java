@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -101,16 +103,18 @@ public class DockerService {
 		    Map<String, String> labels = new HashMap<String, String>();
 		    labels.put("BRAINE_ID", selectedImage.getUri());
 		    
-		    @SuppressWarnings("deprecation")
+		    Set<String> tags = new HashSet<String>();
+ 		    tags.add(imageTag);
+ 		    
 			String imageId = client.buildImageCmd(manifestFile)
-		    		.withTag(imageTag)
+		    		.withTags(tags)
 		    		.withLabels(labels)
 		    		.exec(callback)
 		    		.awaitImageId();
-		    client.pushImageCmd(imageTag)
-		    	.withName(imageTag)
-		    	.start()
-		    	.awaitCompletion();
+			    client.pushImageCmd(imageTag)
+			    	.withName(imageTag)
+			    	.start()
+			    	.awaitCompletion();
 		    
 			return imageId;
 		}

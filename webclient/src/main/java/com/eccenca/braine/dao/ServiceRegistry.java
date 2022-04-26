@@ -13,6 +13,7 @@ public class ServiceRegistry extends Resource {
 	public static final String NETWORK_ADDRESS_ATTR = "NETWORK_ADDRESS_ATTR";
 	
 	private String networkAddress = null;
+	private String config = null;
 	
 	public ServiceRegistry(String name) {
 		super(name);
@@ -24,6 +25,14 @@ public class ServiceRegistry extends Resource {
 	
 	public String getNetworkAddress() {
 		return networkAddress;
+	}
+	
+	public String getConfig() {
+		return config;
+	}
+	
+	public void setConfig(String config) {
+		this.config = config;
 	}
 	
 }

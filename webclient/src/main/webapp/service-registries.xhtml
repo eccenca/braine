@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions">
+
+<h:head>
+
+  <title>BRAINE Service Manager - Image Registries</title>
+ 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
+  <link type="text/css" rel="stylesheet" href="/css/app.css"/>
+  
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css"/>
+  <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"/>
+
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet"/>
+</h:head>
+<h:body id="page-top">
+   <style type="text/css">
+	    .label {
+	        width:20%;
+	        padding:4px;
+	    }
+	    
+	    body .ui-tree {
+	    	min-height: 538px;
+	    }
+	    
+	    body .ui-panel .ui-panel-content {
+	    	min-height: 500px;
+	    }
+	 
+	    .value {
+	        width:80%;
+	        padding:4px;
+	    }
+	 
+	    .grid {
+	        width:100%;
+	    }
+	 
+	    .error {
+	        color: red;
+	    }
+	 
+	    .outputLabel {
+	        font-weight: bold;
+	    }
+	 
+	    .grid {
+	        width:33%;
+	        padding:4px;
+	    }
+	</style>
+	
+	
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.xhtml">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-8">BRAINE-Storm Service Manager</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0"/>
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="index.xhtml">
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Images
+            </div>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider"/>
+
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" href="images.xhtml">
+                    <span>Catalog</span></a>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="image-registries.xhtml">
+                    <span>Registries</span></a>
+            </li>
+            
+                         <!-- Heading -->
+            <div class="sidebar-heading">
+                Services
+            </div>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider"/>
+
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" href="service-profiles.xhtml">
+                    <span>Catalog</span></a>
+            </li>
+            
+              <!-- Nav Item - Tables -->
+            <li class="nav-item active">
+                <a class="nav-link" href="service-registries.xhtml">
+                    <span>Registries</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block"/>
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                         <a class="nav-link"  style="position: fixed;right: 10px;"
+                         	href="https://github.com/eccenca/braine/tree/main/webclient" 
+                          	role="button">
+                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">Fork/Report/Contribute</span>
+                         </a>
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                	
+					<h:form id="contentForm">
+				        <p:outputLabel id="contentPanel">
+					        <div class="card">
+							    <p:messages id="msgs" showDetail="true" closable="true"/>
+							    <p:tabView>
+							    	<p:tab title="Repository">
+								        <p:dataTable
+								        	id="serviceRegistryTable"
+								        	widgetVar="serviceRegistryTable"
+									        var="serviceRegistry"
+								        	value="#{serviceRegistryView.list}"
+								        	editable="true"
+								        	rowKey="#{serviceRegistry.uri}">
+							        	
+								        	<p:ajax event="rowEdit" listener="#{serviceRegistryView.onRowEdit}" update="@form:contentPanel:msgs"/>
+								            
+								            <p:column style="width:2rem">
+								                <p:rowToggler/>
+								            </p:column>
+								
+								            <p:column headerText="Registry">
+								              	<p:cellEditor>
+								                    <f:facet name="output">
+								                        <h:outputText value="#{serviceRegistry.name}"/>
+								                    </f:facet>
+								                    <f:facet name="input">
+								                        <p:inputText style="width:100%" value="#{serviceRegistry.name}"/>
+								                    </f:facet>
+								                </p:cellEditor>
+								            </p:column>
+								            
+								            <p:column headerText="Description">
+								              	<p:cellEditor>
+								                    <f:facet name="output">
+								                        <h:outputText value="#{serviceRegistry.description}"/>
+								                    </f:facet>
+								                    <f:facet name="input">
+								                        <p:inputText style="width:100%" value="#{serviceRegistry.description}"/>
+								                    </f:facet>
+								                </p:cellEditor>
+								            </p:column>
+								            
+								            <p:column style="width:8rem">
+								                <p:rowEditor editTitle="Edit Row" style="padding:3px;float: left;" cancelTitle="Cancel Edit" saveTitle="Save Row"/>
+								                <p:commandButton title="Remove" action="#{serviceRegistryView.remove(serviceRegistry.uri)}" 
+								                	style="padding:5px;float: left;"  
+								                	icon="pi pi-trash"
+								                	update="@form"
+								                	styleClass="rounded-button ui-button-danger ui-button-flat">
+								                </p:commandButton>
+									        </p:column>
+									        
+									        <f:facet name="footer">
+								                  <p:commandButton value="New"
+												    	process="@this"
+												    	oncomplete="PF('serviceRegistryTable').addRow();"
+												    	action="#{serviceRegistryView.newRegistry()}"/>
+								            </f:facet>
+								
+											<p:rowExpansion style="background-color: #ededed;">
+												<p:tabView>										
+													<p:tab title="Config">
+														<p:outputPanel style="display:grid;">
+															<div class="card">
+																<p:outputPanel id="configPanel" >
+																	<p:inplace editor="true">
+													                	<p:ajax event="save" listener="#{serviceRegisterView.update(serviceRegistry.uri)}" />
+								                   						<f:facet name="output">
+															               	<h:outputText escape="false" value="#{fn:replace(empty serviceRegistry.config ? 'Click here to add': serviceRegistry.config,'\\n','&lt;br/&gt;')}"/>
+															            </f:facet>
+															            <f:facet name="input">
+															                <p:inputTextarea rows="17" cols="70" value="#{serviceRegistry.config}" autoResize="false"/>
+															            </f:facet>
+														        	</p:inplace>
+														   		</p:outputPanel>
+														   </div>
+												      	</p:outputPanel>
+											      	</p:tab>
+											      	<p:tab title="Applications">
+														<p:dataTable
+													        var="deployedApp"
+													        widgetVar="deployedServiceeTable"
+												        	value="#{serviceRegistryView.listApps(serviceRegistry.uri)}"
+												        	editable="true"
+												        	rowKey="#{deployedApps}">
+												        	
+												        	<p:column headerText="Label">
+												            	<h:outputText style="width:100%" value="#{deployedApp}"/>
+												            </p:column>
+												            
+												            <p:column style="width:8rem">
+												                <p:commandButton title="Remove" 
+												                	action="#{serviceRegistryView.removeApp(serviceRegistry.uri, deployedApp)}"
+												                	style="padding:5px;float: left;"
+												                	icon="pi pi-trash"
+												                	update="@form"
+												                	styleClass="rounded-button ui-button-danger ui-button-flat">
+												                </p:commandButton>
+													        </p:column>
+
+													        <f:facet name="footer">
+												                <p:commandButton 
+												                 	value="Deploy"
+																    action="#{serviceRegistryView.selectService(serviceRegistry.uri)}">
+																	<p:ajax event="dialogReturn"
+																		update="@form" listener="#{serviceRegistryView.deploy}"/>
+																</p:commandButton>
+												            </f:facet>
+
+															<p:rowExpansion style="background-color: #ededed;">
+
+													      		<p:tabView>										
+																	<p:tab title="Services">
+																		<p:outputPanel style="display:grid;">
+																			<p:dataTable
+																		        var="deployedService"
+																		        widgetVar="deployedServiceTable"
+																	        	value="#{serviceRegistryView.list(serviceRegistry.uri)}"
+																	        	editable="true"
+																	        	rowKey="#{deployedService.repoId}">
+																	        	
+																	        	<p:column headerText="Id">
+																	            	<h:outputText style="width:100%" value="#{deployedService.repoId}"/>
+																	            </p:column>
+																	            
+																	            <p:column headerText="Tags">
+																	            	<h:outputText style="width:100%" value="#{deployedService.repoLabels}"/>
+																	            </p:column>
+																	
+																	            <p:column headerText="Image">
+																	            	<h:outputText style="width:100%" value="#{deployedImage.name}"/>
+																	            </p:column>
+																	            
+																	            <p:column headerText="Description">
+																	            	 <h:outputText style="width:100%" value="#{deployedImage.description}"/>
+																	            </p:column>
+																	            
+																	            <p:column style="width:8rem">
+																	                <p:commandButton title="Remove" 
+																	                	action="#{serviceRegistryView.remove(serviceRegistry.uri, deployedImage)}"
+																	                	style="padding:5px;float: left;"
+																	                	icon="pi pi-trash"
+																	                	update="@form"
+																	                	styleClass="rounded-button ui-button-danger ui-button-flat">
+																	                </p:commandButton>
+																		        </p:column>
+																		        
+																		        <f:facet name="footer">
+																	                  <p:commandButton 
+																	                  	value="Deploy"
+																					    action="#{serviceRegistryView.selectService(serviceRegistry.uri)}">
+																						<p:ajax event="dialogReturn"
+																							update="@form" listener="#{serviceRegistryView.deploy}"/>
+																					  </p:commandButton>
+																	            </f:facet>
+																	        </p:dataTable>
+																      	</p:outputPanel>
+																   </p:tab>
+																</p:tabView>
+														    </p:rowExpansion>
+														 </p:dataTable>
+														</p:tab>
+													</p:tabView>
+						            		  	</p:rowExpansion>
+								        	</p:dataTable>
+								        </p:tab>
+								        <p:tab title="Local">
+								        	<p:dataTable
+										        var="serviceRegistry"
+									        	value="#{serviceRegistryView.localList}"
+									        	editable="false"
+									        	rowKey="#{serviceRegistry.name}">
+									            
+									            <p:column style="width:2rem">
+									                <p:rowToggler/>
+									            </p:column>
+									
+									            <p:column headerText="Registry">
+									                <h:outputText value="#{serviceRegistry.name}"/>  
+									            </p:column>
+										        
+										        <p:rowExpansion style="background-color: #ededed;">
+													<p:tabView>										
+														<p:tab title="Config">
+															<p:outputPanel style="display:grid;">
+																<div class="card">
+																	<p:outputPanel id="configPanel" >
+																    	<h:outputText escape="false" value="#{fn:replace(empty serviceRegistry.config ? 'Empty': serviceRegistry.config,'\\n','&lt;br/&gt;')}"/>
+															   		</p:outputPanel>
+															   </div>
+													      	</p:outputPanel>
+												      	</p:tab>
+												      	<p:tab title="Applications">
+														<p:dataTable
+													        var="deployedApp"
+													        widgetVar="deployedServiceeTable"
+												        	value="#{serviceRegistryView.listApps(serviceRegistry.uri)}"
+												        	editable="true"
+												        	rowKey="#{deployedApps}">
+												        	
+												        	 <p:column style="width:2rem">
+												                <p:rowToggler/>
+												            </p:column>
+												        	
+												        	<p:column headerText="Label">
+												            	<h:outputText style="width:100%" value="#{deployedApp}"/>
+												            </p:column>
+												            
+												            <p:column style="width:8rem">
+												                <p:commandButton title="Remove" 
+												                	action="#{serviceRegistryView.removeApp(serviceRegistry.uri, deployedApp)}"
+												                	style="padding:5px;float: left;"
+												                	icon="pi pi-trash"
+												                	update="@form"
+												                	styleClass="rounded-button ui-button-danger ui-button-flat">
+												                </p:commandButton>
+													        </p:column>
+													        
+													        <p:rowExpansion style="background-color: #ededed;">
+
+													      		<p:tabView>
+													      			<p:tab title="Deployments">
+																		<p:outputPanel style="display:grid;">
+																			<p:dataTable
+																		        var="deployment"
+																		        widgetVar="deployedServiceTable"
+																	        	value="#{serviceRegistryView.listDeployments(serviceRegistry.uri, deployedApp)}"
+																	        	rowKey="#{deployment.repoId}">
+																	        	
+																	        	<p:column headerText="Id">
+																	            	<h:outputText style="width:100%" value="#{deployment.repoId}"/>
+																	            </p:column>
+																	            
+																	            <p:column headerText="Labels">
+																	            	<h:outputText style="width:100%" value="#{deployment.repoLabels}"/>
+																	            </p:column>
+																	
+																	            
+																	        </p:dataTable>
+																      	</p:outputPanel>
+																   </p:tab>	
+																	<p:tab title="Network Services">
+																		<p:outputPanel style="display:grid;">
+																			<p:dataTable
+																		        var="deployedService"
+																		        widgetVar="deployedServiceTable"
+																	        	value="#{serviceRegistryView.listServices(serviceRegistry.uri, deployedApp)}"
+																	        	rowKey="#{deployedService.repoId}">
+																	        	
+																	        	<p:column headerText="Id">
+																	            	<h:outputText style="width:100%" value="#{deployedService.repoId}"/>
+																	            </p:column>
+																	            
+																	            <p:column headerText="Labels">
+																	            	<h:outputText style="width:100%" value="#{deployedService.repoLabels}"/>
+																	            </p:column>
+																	
+																	            
+																	        </p:dataTable>
+																      	</p:outputPanel>
+																   </p:tab>
+																   <p:tab title="PODs">
+																		<p:outputPanel style="display:grid;">
+																			<p:dataTable
+																		        var="pod"
+																		        widgetVar="deployedServiceTable"
+																	        	value="#{serviceRegistryView.listPods(serviceRegistry.uri, deployedApp)}"
+																	        	rowKey="#{deployment.repoId}">
+																	        	
+																	        	<p:column headerText="Id">
+																	            	<h:outputText style="width:100%" value="#{pod.repoId}"/>
+																	            </p:column>
+																	            
+																	            <p:column headerText="Labels">
+																	            	<h:outputText style="width:100%" value="#{pod.repoLabels}"/>
+																	            </p:column>
+																	
+																	            
+																	        </p:dataTable>
+																      	</p:outputPanel>
+																   </p:tab>
+																   <p:tab title="StatefulSets">
+																		<p:outputPanel style="display:grid;">
+																			<p:dataTable
+																		        var="statefulset"
+																		        widgetVar="deployedServiceTable"
+																	        	value="#{serviceRegistryView.listStatefulSets(serviceRegistry.uri, deployedApp)}"
+																	        	rowKey="#{deployment.repoId}">
+																	        	
+																	        	<p:column headerText="Id">
+																	            	<h:outputText style="width:100%" value="#{statefulset.repoId}"/>
+																	            </p:column>
+																	            
+																	            <p:column headerText="Labels">
+																	            	<h:outputText style="width:100%" value="#{statefulset.repoLabels}"/>
+																	            </p:column>
+																	            
+																	        </p:dataTable>
+																      	</p:outputPanel>
+																   </p:tab>
+																</p:tabView>
+														    </p:rowExpansion>
+
+													        <f:facet name="footer">
+												                <p:commandButton 
+												                 	value="Deploy"
+																    action="#{serviceRegistryView.selectService(serviceRegistry.uri)}">
+																	<p:ajax event="dialogReturn"
+																		update="@form" listener="#{serviceRegistryView.deploy}"/>
+																</p:commandButton>
+												            </f:facet>
+
+															
+														 </p:dataTable>
+														</p:tab>
+											      	</p:tabView>
+							            		  </p:rowExpansion>
+									        </p:dataTable>
+								        </p:tab>
+							     	</p:tabView>
+								</div>
+							</p:outputLabel>
+						</h:form>
+	                </div>
+	                <!-- /.container-fluid -->
+	
+	            </div>
+	            <!-- End of Main Content -->
+	
+	            <!-- Footer -->
+	            <footer class="sticky-footer bg-white">
+	                <div class="container my-auto">
+	                    <div class="copyright text-center my-auto">
+	                        <span>Copyright &copy; http://eccenca.com 2022</span>
+	                    </div>
+	                </div>
+	            </footer>
+	            <!-- End of Footer -->
+	
+	        </div>
+	        <!-- End of Content Wrapper -->
+	
+	    </div>
+	    <!-- End of Page Wrapper -->
+	
+	    <!-- Scroll to Top Button-->
+	    <a class="scroll-to-top rounded" href="#page-top">
+	        <i class="fas fa-angle-up"></i>
+	    </a>
+		
+	    <!-- Core plugin JavaScript-->
+	    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+	
+	    <!-- Custom scripts for all pages-->
+	    <script src="js/sb-admin-2.js"></script>
+		
+ 	
+	</h:body>
+</html>

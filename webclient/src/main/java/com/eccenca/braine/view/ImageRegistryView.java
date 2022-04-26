@@ -169,7 +169,14 @@ public class ImageRegistryView implements Serializable {
 	}
 
 	private String getRegistryPrefix(String imageRegistryUri) throws MalformedURLException {
+		if(imageRegistryUri == null || imageRegistryUri.isEmpty()) {
+			return imageRegistryUri;
+		}
 		URL url = new URL(imageRegistryUri);
+		String path = url.getPath();
+		if(path != null) {
+			return url.getAuthority() + path;
+		}
 		return url.getAuthority();
 	}
 	
