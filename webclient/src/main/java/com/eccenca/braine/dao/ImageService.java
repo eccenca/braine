@@ -185,4 +185,8 @@ public class ImageService {
 	public Image getImage(String uri) {
 		return sparqlService.get(uri, tripleToImage, attrMapping);
 	}
+	
+	public void setFileRepoPath(String fileRepoPath) {
+		this.fileRepoPath = fileRepoPath;
+	}
 }

@@ -122,10 +122,10 @@ public class ImageRegistryView implements Serializable {
 		ImageRegistry imageRegistry = imageRegistryMap.get(imageRegistryUri);
 		List<PublishedImage> publishedImageList = imageRegistryImagesMap.get(imageRegistryUri);
 		if(publishedImageList == null) {
-			List<com.github.dockerjava.api.model.Image> repoImages = dockerService.getList();
-			publishedImageList = new ArrayList<PublishedImage>();
-			Map<String, PublishedImage> imageRegistryImageMap = new HashMap<String, PublishedImage>();
 			try {
+				publishedImageList = new ArrayList<PublishedImage>();
+				List<com.github.dockerjava.api.model.Image> repoImages = dockerService.getList();
+				Map<String, PublishedImage> imageRegistryImageMap = new HashMap<String, PublishedImage>();
 				String registryID = getRegistryPrefix(imageRegistry.getNetworkAddress());
 				for(com.github.dockerjava.api.model.Image repoImage : repoImages) {
 					if(isLocal(registryID) || contains(repoImage.getRepoTags(), registryID)) {
@@ -142,10 +142,11 @@ public class ImageRegistryView implements Serializable {
 						publishedImageList.add(publishedImage);
 					}
 				}
-			} catch (MalformedURLException e) {
+			} catch (Exception e) {
 				String message = "Error listing images from registry " + imageRegistry.getName() + ": " + e.getMessage();
 				FacesMessage faceMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", message);
 		        FacesContext.getCurrentInstance().addMessage(null, faceMessage);
+		        PrimeFaces.current().ajax().update("contentPanel:msgs");
 		        logger.error(message, e);
 			}			
 			imageRegistryImagesMap.put(imageRegistryUri, publishedImageList);
