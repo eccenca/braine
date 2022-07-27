@@ -19,19 +19,19 @@ public class WorkflowToTripleMarshal extends AbstractObjectToTripleMarshal
 	public List<Triple> marshal(Workflow instance, Map<String, String> attrMapping) {
 		List<Triple> triples = new ArrayList<Triple>();
 
-		addLiteral(triples, instance.getUri(), attrMapping.get(Image.LABEL_ATTR), instance.getName(), "en");
+		addLiteral(triples, instance.getUri(), attrMapping.get(Workflow.LABEL_ATTR), instance.getName(), "en");
 
-		addLiteral(triples, instance.getUri(), attrMapping.get(ServiceProfile.MANIFEST_ATTR), instance.getManifest(),
+		addLiteral(triples, instance.getUri(), attrMapping.get(Workflow.MANIFEST_ATTR), instance.getManifest(),
 				null);
 
-		addLiteral(triples, instance.getUri(), attrMapping.get(ServiceProfile.VARIABLES_ATTR), instance.getVariables(),
+		addLiteral(triples, instance.getUri(), attrMapping.get(Workflow.VARIABLES_ATTR), instance.getVariables(),
 				null);
 
-		addLiteral(triples, instance.getUri(), attrMapping.get(ServiceProfile.DESCRIPTION_ATTR),
+		addLiteral(triples, instance.getUri(), attrMapping.get(Workflow.DESCRIPTION_ATTR),
 				instance.getDescription(), "en");
 
 		addResource(triples, instance.getUri(), RDF.type.toString(),
-				"https://braine.eccenca.dev/vocabulary/itops#ServiceProfile");
+				"https://braine.eccenca.dev/vocabulary/itops#Workflow");
 
 		return triples;
 	}

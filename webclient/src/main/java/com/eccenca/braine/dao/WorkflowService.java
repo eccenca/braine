@@ -22,7 +22,7 @@ public class WorkflowService {
 	
 	protected static final Logger logger = LogManager.getLogger();
 
-	private final static String DATA_TYPE = "https://braine.eccenca.dev/vocabulary/itops#ServiceProfile";
+	private final static String DATA_TYPE = "https://braine.eccenca.dev/vocabulary/itops#Workflow";
 	private final static TriplesToWorkflowMarshal tripleToObject = new TriplesToWorkflowMarshal();
 	private final static WorkflowToTripleMarshal objectToTriple = new WorkflowToTripleMarshal();
 	private Map<String, String> attrMapping = new HashMap<String, String>();
