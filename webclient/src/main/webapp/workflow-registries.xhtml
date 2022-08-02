@@ -9,7 +9,7 @@
 
 <h:head>
 
-  <title>BRAINE Service Manager - Image Catalog</title>
+  <title>BRAINE Service Manager - Workflow Registries</title>
  
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -22,7 +22,6 @@
   <link
       href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
       rel="stylesheet"/>
-  <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet"/>
@@ -98,7 +97,7 @@
             <hr class="sidebar-divider"/>
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="images.xhtml">
                     <span>Catalog</span></a>
             </li>
@@ -142,7 +141,7 @@
                     <span>Catalog</span></a>
             </li>
             
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="workflow-registries.xhtml">
                     <span>Registries</span></a>
             </li>
@@ -167,12 +166,11 @@
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                           <a class="nav-link"  style="position: fixed;right: 10px;"
-                           		href="https://github.com/eccenca/braine/tree/main/webclient" 
-                            	role="button">
-                               <span class="mr-2 d-none d-lg-inline text-gray-600 small">Fork/Report/Contribute</span>
-                           </a>
-
+                         <a class="nav-link"  style="position: fixed;right: 10px;"
+                         	href="https://github.com/eccenca/braine/tree/main/webclient" 
+                          	role="button">
+                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">Fork/Report/Contribute</span>
+                         </a>
                 </nav>
                 <!-- End of Topbar -->
 
@@ -183,28 +181,38 @@
 					        <div class="card">
 							    <p:messages id="msgs" showDetail="true" closable="true"/>
 						        <p:dataTable
-						        	id="imageTable"
-						        	widgetVar="imageTable"
-							        var="image"
-						        	value="#{imageView.list}"
+						        	id="workflowRegistryTable"
+						        	widgetVar="workflowRegistryTable"
+							        var="workflowRegistry"
+						        	value="#{workflowRegistryView.list}"
 						        	editable="true"
-						        	rowKey="#{image.uri}">
-						        	
-						        	<p:ajax event="rowEdit" listener="#{imageView.onRowEdit}" update="@form:contentPanel:msgs"/>
-						            
-						            <p:ajax event="rowToggle" update="@form:contentPanel:msgs"/>
+						        	rowKey="#{workflowRegistry.uri}">
+					        	
+					        		<p:ajax event="rowToggle" update="@form:contentPanel:msgs"/>
+						        	<p:ajax event="rowEdit" listener="#{workflowRegistryView.onRowEdit}" update="@form:contentPanel:msgs"/>
 						            
 						            <p:column style="width:2rem">
 						                <p:rowToggler/>
 						            </p:column>
 						
-						            <p:column headerText="Image">
+						            <p:column headerText="Registry">
 						              	<p:cellEditor>
 						                    <f:facet name="output">
-						                        <h:outputText value="#{image.name}"/>
+						                        <h:outputText value="#{workflowRegistry.name}"/>
 						                    </f:facet>
 						                    <f:facet name="input">
-						                        <p:inputText style="width:100%" value="#{image.name}"/>
+						                        <p:inputText style="width:100%" value="#{workflowRegistry.name}"/>
+						                    </f:facet>
+						                </p:cellEditor>
+						            </p:column>
+						            
+						             <p:column headerText="Address">
+						              	<p:cellEditor>
+						                    <f:facet name="output">
+						                        <h:outputText value="#{workflowRegistry.networkAddress}"/>
+						                    </f:facet>
+						                    <f:facet name="input">
+						                        <p:inputText style="width:100%" value="#{workflowRegistry.networkAddress}"/>
 						                    </f:facet>
 						                </p:cellEditor>
 						            </p:column>
@@ -212,17 +220,17 @@
 						            <p:column headerText="Description">
 						              	<p:cellEditor>
 						                    <f:facet name="output">
-						                        <h:outputText value="#{image.description}"/>
+						                        <h:outputText value="#{workflowRegistry.description}"/>
 						                    </f:facet>
 						                    <f:facet name="input">
-						                        <p:inputText style="width:100%" value="#{image.description}"/>
+						                        <p:inputText style="width:100%" value="#{workflowRegistry.description}"/>
 						                    </f:facet>
 						                </p:cellEditor>
 						            </p:column>
 						            
 						            <p:column style="width:8rem">
 						                <p:rowEditor editTitle="Edit Row" style="padding:3px;float: left;" cancelTitle="Cancel Edit" saveTitle="Save Row"/>
-						                <p:commandButton title="Remove" action="#{imageView.remove(image.uri)}" 
+						                <p:commandButton title="Remove" action="#{workflowRegistryView.remove(workflowRegistry.uri)}" 
 						                	style="padding:5px;float: left;"  
 						                	icon="pi pi-trash"
 						                	update="@form"
@@ -233,93 +241,58 @@
 							        <f:facet name="footer">
 						                  <p:commandButton value="New"
 										    	process="@this"
-										    	oncomplete="PF('imageTable').addRow();"
-										    	action="#{imageView.newImage()}"/>
+										    	oncomplete="PF('workflowRegistryTable').addRow();"
+										    	action="#{workflowRegistryView.newRegistry()}"/>
 						            </f:facet>
 						
 									<p:rowExpansion style="background-color: #ededed;">
 										<p:outputPanel style="display:grid;">
-											<h3>Files</h3>					        					
-			                  				<p:dataTable var="file" id="imageTable" value="#{image.files}" styleClass="panel-component">
-			                  					<f:facet name="header">
-			                  						<p:fileUpload
-														process="@this"
-														update="@form"
-														mode="simple"
-														skinSimple="true"
-											            auto="true"
-											            listener="#{imageView.handleFileUpload}">
-											            <f:attribute name="image" value="#{image.uri}"/>
-											        </p:fileUpload>
-			                  					</f:facet>
-									            <p:column>
-									                <h:outputText value="#{file}" />
+											<h4>Workflows</h4>
+											<p:dataTable
+										        var="deployedWorkflow"
+										        widgetVar="deployedWorkflowTable"
+									        	value="#{workflowRegistryView.list(workflowRegistry.uri)}"
+									        	editable="true"
+									        	rowKey="#{deployedWorkflow.repoId}">
+									        	
+									        	<p:column headerText="Id">
+									            	<h:outputText style="width:100%" value="#{deployedWorkflow.beautifulRepoId}"/>
 									            </p:column>
+									            
+									            <p:column headerText="Tags">
+									            	<h:outputText style="width:100%" value="#{deployedWorkflow.repoTags}"/>
+									            </p:column>
+									
+									            <p:column headerText="Image">
+									            	<h:outputText style="width:100%" value="#{deployedWorkflow.name}"/>
+									            </p:column>
+									            
+									            <p:column headerText="Description">
+									            	 <h:outputText style="width:100%" value="#{deployedWorkflow.description}"/>
+									            </p:column>
+									            
 									            <p:column style="width:8rem">
-									                <p:commandButton title="Remove" action="#{imageView.remove(image.uri, file)}" 
+									                <p:commandButton title="Remove" 
+									                	action="#{workflowRegistryView.remove(workflowRegistry.uri, deployedWorkflow)}"
 									                	style="padding:5px;float: left;"
 									                	icon="pi pi-trash"
 									                	update="@form"
 									                	styleClass="rounded-button ui-button-danger ui-button-flat">
 									                </p:commandButton>
 										        </p:column>
+										        
+										        <f:facet name="footer">
+									                  <p:commandButton 
+									                  	value="Deploy"
+													    action="#{workflowRegistryView.selectWorkflow(workflowRegistry.uri)}">
+														<p:ajax event="dialogReturn"
+															update="@form" listener="#{workflowRegistryView.deploy}"/>
+													  </p:commandButton>
+									            </f:facet>
 									        </p:dataTable>
-									        <h3>Setup</h3>	
-				                   			<p:tabView styleClass="panel-component" activeIndex="#{imageView.tab}">
-									            <p:tab title="Manifest">
-									            	<p:selectOneMenu styleClass="panel-component" value="#{image.manifestFile}">
-									                    <f:selectItem itemLabel="New" itemValue=""/>
-									                    <f:selectItems value="#{imageView.getImageFiles(image.uri)}"/>
-									                    <p:ajax event="itemSelect" 
-															        update="@parent:@parent:manifestPanel"
-															        listener="#{imageView.setManifestFile(image.uri, image.manifestFile)}"/>
-									                </p:selectOneMenu>
-													
-									            	<div class="card">
-								            			<p:outputPanel id="manifestPanel" >
-													         <p:inplace rendered="#{imageView.isManifestEditMode(image.uri)}" editor="true">
-											                	<p:ajax event="save" listener="#{imageView.update(image.uri)}" />
-							                   					<f:facet name="output">
-													               	<h:outputText escape="false" value="#{fn:replace(empty image.manifest ? 'Click here to add a manifest': image.manifest,'\\n','&lt;br/&gt;')}"/>
-													            </f:facet>
-													            <f:facet name="input">
-													                <p:inputTextarea rows="17" cols="70" value="#{image.manifest}" autoResize="false"/>
-													            </f:facet>
-												        	</p:inplace>
-													    
-													        <h:outputText rendered="#{!(imageView.isManifestEditMode(image.uri))}" escape="false" value="#{fn:replace(empty image.manifest ? 'Click here to add a manifest': image.manifest,'\\n','&lt;br/&gt;')}"/>
-														</p:outputPanel>
-													</div>
-									            </p:tab>
-									            <p:tab title="Variables">
-									               <p:selectOneMenu styleClass="panel-component" value="#{image.variableFile}">
-									                    <f:selectItem itemLabel="New" itemValue=""/>
-									                    <f:selectItems value="#{imageView.getImageFiles(image.uri)}"/>
-									                    <p:ajax event="itemSelect"
-															        update="@parent:@parent:variablePabel"
-															        listener="#{imageView.setVariablesFile(image.uri, image.variableFile)}"/>
-									               </p:selectOneMenu>
-			
-												   <div class="card">
-														<p:outputPanel id="variablePabel" >
-															<p:inplace rendered="#{imageView.isVariablesEditMode(image.uri)}" editor="true">
-											                	<p:ajax event="save" listener="#{imageView.update(image.uri)}" />
-						                   						<f:facet name="output">
-													               	<h:outputText escape="false" value="#{fn:replace(empty image.variables ? 'Click here to ser a variable': image.variables,'\\n','&lt;br/&gt;')}"/>
-													            </f:facet>
-													            <f:facet name="input">
-													                <p:inputTextarea rows="17" cols="70" value="#{image.variables}" autoResize="false"/>
-													            </f:facet>
-												        	</p:inplace>
-												        	<h:outputText rendered="#{!(imageView.isVariablesEditMode(image.uri))}" escape="false" value="#{fn:replace(empty image.variables ? 'Click here to set a variable': image.variables,'\\n','&lt;br/&gt;')}"/>
-												   		</p:outputPanel>
-												   </div>
-													
-								           		</p:tab>
-									        </p:tabView>
 								      	</p:outputPanel>
 				            		  </p:rowExpansion>
-							        </p:dataTable>
+						        </p:dataTable>
 								</div>
 							</p:outputLabel>
 						</h:form>

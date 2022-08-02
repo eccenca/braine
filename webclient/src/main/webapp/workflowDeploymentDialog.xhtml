@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+	    <title>Workflow Deployment</title>
+	    <link type="text/css" rel="stylesheet" href="/css/app.css"/>
+	    <style type="text/css">
+			html {
+				font-size: 14px;
+		    }
+	    </style>
+	</h:head>
+
+	<h:body>
+		<h:form>
+		    <p:dataTable
+			        var="workflow"
+			        selection="#{workflowRegistryView.selectedWorkflow}"
+			        selectionMode="single"
+		        	value="#{workflowView.list}"
+		        	rowKey="#{workflow.uri}" styleClass="panel-component">
+					
+		            <p:column headerText="Workflows">
+	                    <h:outputText value="#{workflow.name}"/>
+		            </p:column>
+		            
+		            <p:column headerText="Description">
+		                <h:outputText value="#{workflow.description}"/>
+		            </p:column>
+					        
+			</p:dataTable>
+			<p:commandButton value="Ok" action="#{workflowRegistryView.deploy}"/>
+		</h:form>
+	</h:body>
+</html>

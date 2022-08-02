@@ -290,18 +290,22 @@ public class ImageView implements Serializable {
         try {
             // open a zip file for reading
         	File file = new File(zipFilePath);
-            try(ZipFile zipFile = new ZipFile(file);) {
-            // get an enumeration of the ZIP file entries
-	            Enumeration<? extends ZipEntry> e = zipFile.entries();
-	            while (e.hasMoreElements()) {
-	                ZipEntry entry = e.nextElement();
-	                // get the name of the entry
-	                String entryName = entry.getName();
-	                if(!entry.isDirectory()) {
-	                	entries.add(file.getName() + "/" +entryName);
-	                }
+        	if(file.exists()) {
+	            try(ZipFile zipFile = new ZipFile(file);) {
+	            // get an enumeration of the ZIP file entries
+		            Enumeration<? extends ZipEntry> e = zipFile.entries();
+		            while (e.hasMoreElements()) {
+		                ZipEntry entry = e.nextElement();
+		                // get the name of the entry
+		                String entryName = entry.getName();
+		                if(!entry.isDirectory()) {
+		                	entries.add(file.getName() + "/" +entryName);
+		                }
+		            }
 	            }
-            }
+        	} else {
+        		logger.warn("File does not exists: " + file.getPath());
+        	}
         }
         catch (IOException e) {
         	logger.error(e);
