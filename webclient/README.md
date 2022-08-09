@@ -70,3 +70,16 @@ BRAINE-Storm a Cloud Service Manager ...
 ```
 
 If you have not changed the default port, your client should be accessible at `http://localhost:7070`.
+
+
+### Docker
+
+build:
+```
+docker build -t webclient .
+```
+
+run:
+```
+docker run -dp 7070:7070 --env user=*user* --env pass=*pass* --env port=7070 webclient
+```
