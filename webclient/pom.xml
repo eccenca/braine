@@ -178,7 +178,7 @@
 		<dependency>
 		    <groupId>io.argoproj.workflow</groupId>
 		    <artifactId>argo-client-java</artifactId>
-		    <version>v3.3.8</version>
+		    <version>v3.4.3</version>
 		</dependency>
   </dependencies>
   <repositories>
