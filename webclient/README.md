@@ -76,7 +76,7 @@ If you have not changed the default port, your client should be accessible at `h
 
 build:
 ```
-docker build -t webclient .
+DOCKER_BUILDKIT=0 docker build -t webclient .
 ```
 
 run:
