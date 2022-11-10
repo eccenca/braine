@@ -20,6 +20,7 @@ public class ServiceRegistryService {
 		attrMapping.put(ServiceRegistry.DESCRIPTION_ATTR, "http://www.w3.org/2000/01/rdf-schema#comment");
 		attrMapping.put(ServiceRegistry.LABEL_ATTR, "http://www.w3.org/2000/01/rdf-schema#label");
 		attrMapping.put(ServiceRegistry.NETWORK_ADDRESS_ATTR, "https://braine.eccenca.dev/vocabulary/itops#address");
+		attrMapping.put(ServiceRegistry.CONFIG_ATTR, "https://braine.eccenca.dev/vocabulary/itops#config");
 	}
 	
 	@Inject
@@ -38,18 +39,10 @@ public class ServiceRegistryService {
 	}
 	
 	public void update(ServiceRegistry serviceRegistry) {
-		Map<String, String> attrMapping = new HashMap<String, String>();
-		attrMapping.put(ServiceRegistry.DESCRIPTION_ATTR, "http://www.w3.org/2000/01/rdf-schema#comment");
-		attrMapping.put(ServiceRegistry.LABEL_ATTR, "http://www.w3.org/2000/01/rdf-schema#label");
-		attrMapping.put(ServiceRegistry.NETWORK_ADDRESS_ATTR, "https://braine.eccenca.dev/vocabulary/itops#address");
 		sparqlService.update(serviceRegistry, objectToTriple, attrMapping);
 	}
 	
 	public void insert(ServiceRegistry serviceRegistry) {
-		Map<String, String> attrMapping = new HashMap<String, String>();
-		attrMapping.put(ServiceRegistry.DESCRIPTION_ATTR, "http://www.w3.org/2000/01/rdf-schema#comment");
-		attrMapping.put(ServiceRegistry.LABEL_ATTR, "http://www.w3.org/2000/01/rdf-schema#label");
-		attrMapping.put(ServiceRegistry.NETWORK_ADDRESS_ATTR, "https://braine.eccenca.dev/vocabulary/itops#address");
 		sparqlService.insert(serviceRegistry, objectToTriple, attrMapping);
 	}
 	

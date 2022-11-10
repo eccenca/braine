@@ -243,7 +243,7 @@
 															<div class="card">
 																<p:outputPanel id="configPanel" >
 																	<p:inplace editor="true">
-													                	<p:ajax event="save" listener="#{serviceRegisterView.update(serviceRegistry.uri)}" />
+													                	<p:ajax event="save" listener="#{serviceRegistryView.update(serviceRegistry.uri)}"  update="@form:contentPanel:msgs"/>
 								                   						<f:facet name="output">
 															               	<h:outputText escape="false" value="#{fn:replace(empty serviceRegistry.config ? 'Click here to add': serviceRegistry.config,'\\n','&lt;br/&gt;')}"/>
 															            </f:facet>

@@ -12,6 +12,7 @@ public class TriplesToServiceRegistryMarshal extends TriplesToInstanceMarshal<Se
 		ServiceRegistry serviceRegistry = new ServiceRegistry(getFirstAsString(ServiceRegistry.LABEL_ATTR, instance, attrMapping));
 		serviceRegistry.setDescription(getFirstAsString(ServiceRegistry.DESCRIPTION_ATTR, instance, attrMapping));
 		serviceRegistry.setNetworkAddress(getFirstAsString(ServiceRegistry.NETWORK_ADDRESS_ATTR, instance, attrMapping));
+		serviceRegistry.setConfig(getFirstAsString(ServiceRegistry.CONFIG_ATTR, instance, attrMapping));
 		serviceRegistry.setUri(uri);
 		return serviceRegistry;
 	}

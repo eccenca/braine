@@ -11,6 +11,7 @@ public class ServiceRegistry extends Resource {
 	public static final String DESCRIPTION_ATTR = "DESCRIPTION_ATTR";
 
 	public static final String NETWORK_ADDRESS_ATTR = "NETWORK_ADDRESS_ATTR";
+	public static final String CONFIG_ATTR = "CONFIG_ATTR";
 	
 	private String networkAddress = null;
 	private String config = null;

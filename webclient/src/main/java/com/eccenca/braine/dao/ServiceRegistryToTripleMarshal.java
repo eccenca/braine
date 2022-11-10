@@ -29,6 +29,11 @@ public class ServiceRegistryToTripleMarshal extends AbstractObjectToTripleMarsha
 				instance.getUri(),
 				attrMapping.get(ServiceRegistry.NETWORK_ADDRESS_ATTR),
 				instance.getNetworkAddress(), null);
+		
+		addLiteral(triples,
+				instance.getUri(),
+				attrMapping.get(ServiceRegistry.CONFIG_ATTR),
+				instance.getConfig(), null);
 
 		addResource(triples, 
 					instance.getUri(),

@@ -131,6 +131,7 @@ public class ServiceRegistryView implements Serializable {
 		try {
 			ServiceRegistry serviceRegistry = serviceRegistryMap.get(serviceRegistryUri);
 			service.update(serviceRegistry);
+			list(serviceRegistryUri);
 			FacesMessage message = new FacesMessage("Successful", "Service " + serviceRegistry.getName() + " was updated.");
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		} catch (Exception e) {
