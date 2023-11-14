@@ -194,20 +194,22 @@ def streamK8sNodeMetrics(nodeMetrics, channels, channelOptions):
             else:
                 channelOptions[channel](nodeMetrics, kind, iname, inamespace, itimestamp, iwindow, icpu, imemory)          
 
-# Kubernetes configs
-# Configs can be set in Configuration class directly or using helper utility
-customConfig = None
-if(kubernetes_host is None):
-    config.load_kube_config()
-else:
-    customConfig = client.Configuration(host=kubernetes_host)
-    if(kubernetes_api_key is not None):
-        customConfig.api_key['authorization'] = kubernetes_api_key
+
 
 # Output default options
 channelOptions = {'stdout': out, 'cmem': cmem, 'sparql': sparql}
 
 if(origin == "kubernetes"):
+    # Kubernetes configs
+    # Configs can be set in Configuration class directly or using helper utility
+    customConfig = None
+    if(kubernetes_host is None):
+        config.load_kube_config()
+    else:
+        customConfig = client.Configuration(host=kubernetes_host)
+        if(kubernetes_api_key is not None):
+            customConfig.api_key['authorization'] = kubernetes_api_key
+    # continues            
     customAPIV1 = None
     if(customConfig is None):
         customAPIV1 = client.CustomObjectsApi()
