@@ -109,3 +109,12 @@ node	docker-desktop	None	2021-02-11T20:59:16Z	30	777873480	6994264
 ...
 ```
 
+## Running with Docker 
+For running with Docker, setup your credentials and select the right origin.
+After that, execute the following commands:
+```
+docker build -t braine-relay .
+docker run -d braine-relay
+...
+```
+

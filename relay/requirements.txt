@@ -1,0 +1,4 @@
+pyyaml
+kubernetes
+confluent-kafka == 2.3.0
+cmem-cmempy
